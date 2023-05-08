@@ -14,7 +14,7 @@ class ThreeByThreeGameEnv(gym.Env):
                                           spaces.Discrete(3)))  # number to substract
         self.observation_space = spaces.Box(
             low=0, high=100, shape=(3, 3), dtype=int)
-        self.BONUS = 10
+        self.BONUS = 20
         self.PENALTY = 10
 
     def reset(self):
@@ -22,6 +22,32 @@ class ThreeByThreeGameEnv(gym.Env):
         self.board = np.random.randint(1, 100, size=(3, 3))
         self.player = 0
         return self.board, {}
+    
+    def is_legal_move(self, action):
+        row_or_col, line, num_to_subtract = action
+        num_to_subtract += 1
+
+        if (row_or_col not in range(2) or
+                line not in range(3) or
+                num_to_subtract not in range(1, 4)):
+            return False
+            # raise ValueError("Invalid action")
+
+        if row_or_col == 0:
+            idx = np.s_[line, :]
+        else:  # if row_or_col == 1
+            idx = np.s_[:, line]
+
+        if 0 in self.board[idx]:
+            return False
+            # raise ValueError("Chosen row or col contains 0")
+
+        if self.board[idx].min() < num_to_subtract:
+            return False
+            # raise ValueError(
+            #     f"Cannot subtract {num_to_subtract} from target {self.board[idx]}")
+        
+        return True
 
     def step(self, action):
         row_or_col, line, num_to_subtract = action
@@ -48,6 +74,8 @@ class ThreeByThreeGameEnv(gym.Env):
         self.board[idx] -= num_to_subtract
         done = False
 
+        term1 = False
+        term2 = False
         # 1st termination condition
         if ((~self.board.any(axis=0)).any() or  # contain any all 0s col
             (~self.board.any(axis=1)).any() or  # contain any all 0s row
@@ -55,13 +83,15 @@ class ThreeByThreeGameEnv(gym.Env):
                 ~np.fliplr(self.board).diagonal().any()):  # if flipped diag is all 0s
             reward += self.BONUS
             done = True
+            term1 = True
 
         # 2nd termination condition
         if not done and (self.board == 0).any(axis=0).all():
             done = True
             reward -= self.PENALTY
+            term2 = True
 
-        return self.board, reward, done, {}
+        return self.board, reward, done, {'t1':term1, 't2':term2}
 
     def render(self, mode='human'):
         print(self.board)
