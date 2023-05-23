@@ -155,31 +155,31 @@ class player {
   std::vector<std::vector<float> > net;
   float evaluate(const board& b) {
     float value = 0;
-    // static constexpr auto feat_range = std::ranges::views::iota(0, feat_num);
-    // std::mutex m;
-    // std::for_each(std::execution::par, feat_range.begin(), feat_range.end(),
-    //               [&value, &b, this, &m](const int& i) {
-    //                 for (int isom = 0; isom < isom_num; isom++) {
-    //                   uint32_t feat = 0;
-    //                   for (const auto& f : feat_idxs[i]) {
-    //                     feat = feat * 100;
-    //                     feat += b.get(f, isom);
-    //                   }
-    //                   std::lock_guard<std::mutex> guard(m);
-    //                   value += net[i][feat];
-    //                 }
-    //               });
+    static constexpr auto feat_range = std::ranges::views::iota(0, feat_num*isom_num);
+    auto values = std::vector<float>(feat_num*isom_num, 0);
+    std::for_each(std::execution::par_unseq, feat_range.begin(), feat_range.end(),
+                  [&value, &b, this, &values](const int& i) {
+                    
+                    uint32_t feat = 0;
+                    for (const auto& f : feat_idxs[i/8]) {
+                      feat = feat * 100;
+                      feat += b.get(f, i%8);
+                    }
+                    values[i] = net[i/8][feat];
+                    
+                  });
 
-    for (int i = 0; i < feat_num; i++) {
-      for (int isom = 0; isom < isom_num; isom++) {
-        uint32_t feat = 0;
-        for (const auto& f : feat_idxs[i]) {
-          feat = feat * 100;
-          feat += b.get(f, isom);
-        }
-        value += net[i][feat];
-      }
-    }
+    // for (int i = 0; i < feat_num; i++) {
+    //   for (int isom = 0; isom < isom_num; isom++) {
+    //     uint32_t feat = 0;
+    //     for (const auto& f : feat_idxs[i]) {
+    //       feat = feat * 100;
+    //       feat += b.get(f, isom);
+    //     }
+    //     value += net[i][feat];
+    //   }
+    // }
+    value = std::accumulate(values.begin(), values.end(), 0);
     return value / (feat_num * isom_num);
   }
   int generate(board& b) {
@@ -200,14 +200,16 @@ class player {
     return best_action;
   }
   void update(const board& b, float error, float alpha = 0.01) {
+    // std::mutex m;
     // static constexpr auto feat_range = std::ranges::views::iota(0, feat_num*isom_num);
     // std::for_each(std::execution::par, feat_range.begin(), feat_range.end(),
-    //               [&alpha, &error, &b, this](const int& i) {
+    //               [&alpha, &error, &b, this, &m](const int& i) {
     //                   uint32_t feat = 0;
     //                 for (const auto& f : feat_idxs[i%8]) {
     //                   feat = feat * 100;
     //                   feat += b.get(f, i/8);
     //                 }
+    //                 std::lock_guard<std::mutex> guard(m);
     //                 net[i%8][feat] += alpha * error / (feat_num * isom_num);
     //               });
     for (int i = 0; i < feat_num; i++) {
