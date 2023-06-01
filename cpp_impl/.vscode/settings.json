@@ -81,6 +81,8 @@
         "numeric": "cpp",
         "random": "cpp",
         "ranges": "cpp",
-        "stop_token": "cpp"
+        "stop_token": "cpp",
+        "__availability": "cpp",
+        "cinttypes": "cpp"
     }
 }
