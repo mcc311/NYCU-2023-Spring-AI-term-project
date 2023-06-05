@@ -108,7 +108,7 @@ int main(int argc, const char* argv[]) {
   // static std::vector<episode> replay_buffer;
   // replay_buffer.reserve(1000);
   auto p1 = td_player();
-  auto p2 = mcts_player(50);
+  auto p2 = mcts_player(5000);
   auto&& [first_win_rate, second_win_rate] =
           test_player0((player&)p1, (player&)p2, 10, 99, 50, true);
 }

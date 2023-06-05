@@ -34,8 +34,7 @@ episode play_an_episode(player& p1, player& p2, const int play_first = 0,
     auto&& [reward, done] = b.apply(action);
     if (verbose) {
       std::cout << b;
-      std::cout << "Select: " << action % 6 << " Substract: " << action / 6 +
-      1
+      std::cout << "Select: " << action % 6 << " Substract: " << action / 6 + 1
                 << " Reward: " << reward << "\n";
     }
     ep.add({action, reward, b});
@@ -46,21 +45,25 @@ episode play_an_episode(player& p1, player& p2, const int play_first = 0,
   return ep;
 }
 
-std::tuple<float, float> test_player0(player& p1, player& p2, int num_to_play = 100,
-                  size_t b_max = 99, size_t b_min = 50, bool verbose=false) {
+std::tuple<float, float> test_player0(player& p1, player& p2,
+                                      int num_to_play = 100, size_t b_max = 99,
+                                      size_t b_min = 50, bool verbose = false) {
   int first_win = 0;
   for (int i_episode = 0; i_episode < num_to_play / 2; i_episode++) {
-    std::cout << i_episode << '\n';
-    episode ep = play_an_episode(p1, p2, 0, b_max, b_min, true);
+    episode ep = play_an_episode(p1, p2, 0, b_max, b_min);
     if (ep.win() == 0) first_win++;
   }
-  if(verbose) std::cout << " | first win rate: " << float(first_win) / (num_to_play/2) << " | ";
+  if (verbose)
+    std::cout << " | first win rate: " << float(first_win) / (num_to_play / 2)
+              << " | ";
   int second_win = 0;
   for (int i_episode = 0; i_episode < num_to_play / 2; i_episode++) {
-    std::cout << i_episode << '\n';
-    episode ep = play_an_episode(p1, p2, 1, b_max, b_min, true);
+    episode ep = play_an_episode(p1, p2, 1, b_max, b_min);
     if (ep.win() == 0) second_win++;
   }
-  if(verbose) std::cout << "second win rate: " << float(second_win) / (num_to_play/2) << "\n";
-  return {float(first_win) / (num_to_play/2), float(second_win) / (num_to_play/2)};
+  if (verbose)
+    std::cout << "second win rate: " << float(second_win) / (num_to_play / 2)
+              << "\n";
+  return {float(first_win) / (num_to_play / 2),
+          float(second_win) / (num_to_play / 2)};
 }
