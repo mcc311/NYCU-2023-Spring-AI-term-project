@@ -66,6 +66,7 @@ class board {
   }
 
   std::tuple<reward, bool> apply(int action) {
+    if(!legal(action)) std::cout << "ILLEGAL!\n";
     auto&& [idxs, minus] = action2idx(action);
     for (auto& idx : idxs) {
       set(idx, get(idx) - minus);
@@ -93,6 +94,18 @@ class board {
     int min = 100;
     for(int i = 0; i < 9; i++) min =  (min > get(i)) ? get(i) : min;
     return min;
+  };
+
+  std::vector<action> shuffle_legal_move(int low = 0, int N = 18) { // TODO: Don't use! this is bugged.
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    std::vector<int> numbers(N-low);
+    std::iota(numbers.begin(), numbers.end(), low);
+
+    // Shuffle the numbers randomly
+    std::ranges::shuffle(numbers, gen);
+    auto view = numbers | std::views::filter([this](int action) { return legal(action); });
+    return {view.begin(), view.end()};
   };
 
 };

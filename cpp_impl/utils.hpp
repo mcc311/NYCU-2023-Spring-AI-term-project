@@ -6,16 +6,16 @@
 
 #include "board.hpp"
 
-std::vector<int> shuffle_actions(int low = 0, int N = 18) {
+auto shuffle_actions = [](int low = 0, int N = 18) {
+  static std::random_device rd;
+  static std::mt19937 gen(rd());
   std::vector<int> numbers(N-low);
   std::iota(numbers.begin(), numbers.end(), low);
 
   // Shuffle the numbers randomly
-  std::random_device rd;
-  static std::mt19937 gen(rd());
   std::ranges::shuffle(numbers, gen);
   return numbers;
-}
+};
 
 void test() {
   board init_b;

@@ -32,12 +32,12 @@ episode play_an_episode(player& p1, player& p2, const int play_first = 0,
     auto& who = (pid % 2 == 0) ? p1 : p2;
     int action = who.generate(b);
     auto&& [reward, done] = b.apply(action);
-    // if (verbose) {
-    //   std::cout << b_prev;
-    //   std::cout << "Select: " << action % 6 << " Substract: " << action / 6 +
-    //   1
-    //             << " Reward: " << reward << "\n";
-    // }
+    if (verbose) {
+      std::cout << b;
+      std::cout << "Select: " << action % 6 << " Substract: " << action / 6 +
+      1
+                << " Reward: " << reward << "\n";
+    }
     ep.add({action, reward, b});
     ep.scores[pid] += reward;
     if (done) break;
@@ -50,13 +50,15 @@ std::tuple<float, float> test_player0(player& p1, player& p2, int num_to_play = 
                   size_t b_max = 99, size_t b_min = 50, bool verbose=false) {
   int first_win = 0;
   for (int i_episode = 0; i_episode < num_to_play / 2; i_episode++) {
-    episode ep = play_an_episode(p1, p2, 0, b_max, b_min);
+    std::cout << i_episode << '\n';
+    episode ep = play_an_episode(p1, p2, 0, b_max, b_min, true);
     if (ep.win() == 0) first_win++;
   }
   if(verbose) std::cout << " | first win rate: " << float(first_win) / (num_to_play/2) << " | ";
   int second_win = 0;
   for (int i_episode = 0; i_episode < num_to_play / 2; i_episode++) {
-    episode ep = play_an_episode(p1, p2, 1, b_max, b_min);
+    std::cout << i_episode << '\n';
+    episode ep = play_an_episode(p1, p2, 1, b_max, b_min, true);
     if (ep.win() == 0) second_win++;
   }
   if(verbose) std::cout << "second win rate: " << float(second_win) / (num_to_play/2) << "\n";

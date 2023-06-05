@@ -9,6 +9,7 @@
 
 #include "board.hpp"
 #include "utils.hpp"
+#include "mcts.hpp"
 
 class player {
  protected:
@@ -279,10 +280,11 @@ board::reward heuristic_ab_player::alphaBetaMin(board b, board::reward alpha,
 
 
 
-class heuristic_player : public player {
+class mcts_player : public player {
  public:
-  heuristic_player(){};
+  int sim_count;
+  mcts_player(int sim_count):sim_count(sim_count){};
   virtual int generate(board& b) {
-    
+    return monte_carlo_tree_search(b, sim_count);
   }
 };
