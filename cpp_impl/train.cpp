@@ -18,6 +18,7 @@ void td_learning(player& p1, player& p2, const std::string& load_path,
                  const size_t test_num) {
   static constexpr size_t max_ep_in_rb = 1;
   std::cout << load_path;
+  if (!load_path.empty()) p1.load(load_path);
   // auto test_p1 = td_player();
   // auto test_p2 = td_player();
   auto test_p1 = heuristic_ab_player(max_depth);
@@ -62,7 +63,7 @@ void td_learning(player& p1, player& p2, const std::string& load_path,
 
     p2 = p1;
   }
-  
+  p1.save(save_path);
 };
 
 int main(int argc, const char* argv[]) {
@@ -108,11 +109,8 @@ int main(int argc, const char* argv[]) {
   // replay_buffer.reserve(1000);
   auto p1 = heuristic_ab_player(max_depth);
   auto p2 = heuristic_ab_player(max_depth);
-  if (!load_path.empty()) p1.load(load_path);
-
   // auto p1 = td_player();
   // auto p2 = td_player();
   td_learning((player&)(p1), (player&)(p2), load_path, save_path, alpha, b_max,
               b_min, total, block, max_depth, test_num);
-  p1.save(save_path);
 }

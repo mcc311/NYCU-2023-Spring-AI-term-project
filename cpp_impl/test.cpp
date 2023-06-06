@@ -25,7 +25,7 @@ void td_learning(player& p1, player& p2, const std::string& load_path,
   auto test_p2 = heuristic_ab_player(max_depth);
   (player&)test_p2 = (player&)p1;
 
-  std::vector<episode> replay_buffer(4);
+  std::vector<Episode> replay_buffer(4);
   clock_t begin_time = clock();
   for (int i_episode = 0; i_episode <= total; i_episode++) {
     if (i_episode % block == 0) {
@@ -45,12 +45,12 @@ void td_learning(player& p1, player& p2, const std::string& load_path,
                    b_min, true);
       begin_time = clock();
     }
-    // episode ep = play_an_episode((player&)(p1), (player&)(p2), 0, b_max,
+    // Episode ep = PlayAnEpisode((player&)(p1), (player&)(p2), 0, b_max,
     // b_min);
     if (replay_buffer.size() >= max_ep_in_rb)
       replay_buffer.erase(replay_buffer.begin());
     replay_buffer.emplace_back(
-        play_an_episode((player&)(p1), (player&)(p2), 0, b_max, b_min));
+        PlayAnEpisode((player&)(p1), (player&)(p2), 0, b_max, b_min));
     float target = 0;
     for (auto& ep : replay_buffer) {
       for (; ep.history.size(); ep.history.pop_back()) {
@@ -105,10 +105,14 @@ int main(int argc, const char* argv[]) {
       test_num = std::stoull(next_opt());
     }
   }
-  // static std::vector<episode> replay_buffer;
+  // static std::vector<Episode> replay_buffer;
   // replay_buffer.reserve(1000);
-  auto p1 = td_player();
-  auto p2 = mcts_player(5000);
+  // auto p1 = ab_player(max_depth);
+  // p1.load("td-8M-ac-10k");
+  // auto p2 = heuristic_ab_player(max_depth);
+  // p2.load("td-8M-ac-10k");
+  auto p1 = mcts_ab_player();
+  auto p2 = mcts_player(6000);
   auto&& [first_win_rate, second_win_rate] =
-          test_player0((player&)p1, (player&)p2, 10, 99, 50, true);
+          test_player0((player&)p1, (player&)p2, 20, 99, 50, true);
 }

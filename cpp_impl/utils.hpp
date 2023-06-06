@@ -6,7 +6,7 @@
 
 #include "board.hpp"
 
-auto shuffle_actions = [](int low = 0, int N = 18) {
+auto ShuffleActions = [](int low = 0, int N = 18) {
   static std::random_device rd;
   static std::mt19937 gen(rd());
   std::vector<int> numbers(N-low);
@@ -17,14 +17,14 @@ auto shuffle_actions = [](int low = 0, int N = 18) {
   return numbers;
 };
 
-void test() {
-  board init_b;
+void Test() {
+  Board init_b;
   for (int i = 0; i < 9; i++) {
     init_b.set(i, 10);
   }
   std::cout << init_b;
   for (int action = 0; action < 18; action++) {
-    board b;
+    Board b;
     for (int i = 0; i < 9; i++) {
       b.set(i, 10);
     }
@@ -33,11 +33,11 @@ void test() {
               << "\n";
     std::cout << b;
   }
-  board b = init_b;
+  Board b = init_b;
   std::cout << "Operator= overloading test: \n";
   std::cout << "Init:\n" << init_b << "Assigned to:\n" << b;
   for (int action = 0; action < 18; action++) {
-    board b;
+    Board b;
     b = init_b;
     b.apply(action);
     std::cout << "Select: " << action % 6 << " Substract: " << action / 6 + 1
