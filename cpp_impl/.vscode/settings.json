@@ -83,6 +83,7 @@
         "ranges": "cpp",
         "stop_token": "cpp",
         "__availability": "cpp",
-        "cinttypes": "cpp"
+        "cinttypes": "cpp",
+        "coroutine": "cpp"
     }
 }
