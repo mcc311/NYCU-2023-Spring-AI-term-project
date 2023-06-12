@@ -33,7 +33,7 @@ class Node {
         parent(parent){};
 
   void expand() {
-    for (const auto action : this->state.shuffle_legal_move()) {
+    for (const auto& action : this->state.shuffle_legal_move()) {
       Board next_state = this->state;
       auto&& [r, done] = next_state.apply(action);
       Node* child = new Node(next_state, action, r, done, this);
@@ -48,7 +48,8 @@ class Node {
       float best_ucb1 = -std::numeric_limits<float>::infinity();
       Node* best_child = nullptr;
 
-      auto [min_value, max_value] = std::ranges::minmax(std::views::transform(current->children, &Node::value));
+      auto [min_value, max_value] = std::ranges::minmax(
+          std::views::transform(current->children, &Node::value));
       // std::cout << min_value << ' ' << max_value << '\n';
 
       for (auto* child : current->children) {
@@ -56,9 +57,11 @@ class Node {
           best_child = child;
           break;
         }
-        float value = (child->value() - min_value + 1e-3) / (max_value - min_value + 1e-3);
-        float ucb1 =  value + 1.25* std::sqrt(2.0f * std::log(current->visits + 1e-5) /
-                               (child->visits + 1e-5));
+        float value = (child->value() - min_value + 1e-3) /
+                      (max_value - min_value + 1e-3);
+        float ucb1 =
+            value + 1.25 * std::sqrt(2.0f * std::log(current->visits + 1e-5) /
+                                     (child->visits + 1e-5));
         if (ucb1 > best_ucb1) {
           best_ucb1 = ucb1;
           best_child = child;
@@ -97,12 +100,7 @@ class Node {
     }
   };
 
-  ~Node() {
-    for (auto* child : children) {
-      child->~Node();
-    }
-    delete this;
-  }
+  ~Node() { for (auto* child : children) delete child; }
 };
 
 Board::Action monte_carlo_tree_search(const Board& state, int sim_count) {
@@ -129,5 +127,6 @@ Board::Action monte_carlo_tree_search(const Board& state, int sim_count) {
       best_action = child->action;
     }
   }
+  delete root;
   return best_action;
 }
