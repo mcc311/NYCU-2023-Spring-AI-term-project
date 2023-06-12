@@ -3,10 +3,12 @@
 #include <vector>
 
 class Board {
+ private:
  public:
   using Reward = float;
   using Action = int;
   uint64_t raw = 0;
+
   inline int get(const int index, const int isomorphic = 0) const noexcept {
     static constexpr int isom_table[8][9] = {
         {0, 1, 2, 3, 4, 5, 6, 7, 8}, {2, 5, 8, 1, 4, 7, 0, 3, 6},
@@ -21,12 +23,12 @@ class Board {
   }
 
   static constexpr int idxs[6][3] = {{0, 1, 2}, {3, 4, 5}, {6, 7, 8},
-                                       {0, 3, 6}, {1, 4, 7}, {2, 5, 8}};
+                                     {0, 3, 6}, {1, 4, 7}, {2, 5, 8}};
 
   const std::tuple<const int (&)[3], const int> action2idx(int action) const {
     return {idxs[action % 6], /*minus= */ action / 6 + 1};
   }
-  bool legal(int action) const { //TODO: Use `pext` to accelerate 
+  bool legal(int action) const {  // TODO: Use `pext` to accelerate
     auto&& [idxs, minus] = action2idx(action);
     bool legal = true;
     for (auto& idx : idxs) {
@@ -35,6 +37,69 @@ class Board {
     return legal;
   };
 
+  void transpose() {
+    static constexpr uint64_t diag =
+        0b0'1111111'0000000'0000000'0000000'1111111'0000000'0000000'0000000'1111111;
+    static constexpr uint64_t bottom =
+        0b0'0000000'0000000'0000000'1111111'0000000'0000000'0000000'1111111'0000000;
+    static constexpr uint64_t upper =
+        0b0'0000000'1111111'0000000'0000000'0000000'1111111'0000000'0000000'0000000;
+    static constexpr uint64_t left_corner =
+        0b0'0000000'0000000'0000000'0000000'0000000'0000000'1111111'0000000'0000000;
+    static constexpr uint64_t right_corner =
+        0b0'0000000'0000000'1111111'0000000'0000000'0000000'0000000'0000000'0000000;
+    raw = (raw & diag) | ((raw & bottom) << 14) | ((raw & upper) >> 14) |
+          ((raw & left_corner) << 28) | ((raw & right_corner) >> 28);
+  };
+  void mirror() {
+    static constexpr uint64_t first_col =
+        0b0'1111111'0000000'0000000'1111111'0000000'0000000'1111111'0000000'0000000;
+    static constexpr uint64_t second_col =
+        0b0'0000000'1111111'0000000'0000000'1111111'0000000'0000000'1111111'0000000;
+    static constexpr uint64_t third_col =
+        0b0'0000000'0000000'1111111'0000000'0000000'1111111'0000000'0000000'1111111;
+    raw =
+        (raw & second_col) | (raw & first_col) >> 14 | (raw & third_col) << 14;
+  }
+  void flip() {
+    static constexpr uint64_t first_row =
+        0b0'1111111'1111111'1111111'0000000'0000000'0000000'0000000'0000000'0000000;
+    static constexpr uint64_t second_row =
+        0b0'0000000'0000000'0000000'1111111'1111111'1111111'0000000'0000000'0000000;
+    static constexpr uint64_t third_row =
+        0b0'0000000'0000000'0000000'0000000'0000000'0000000'1111111'1111111'1111111;
+    raw =
+        (raw & second_row) | (raw & first_row) >> 42 | (raw & third_row) << 42;
+  }
+  void rotate(int r = 1) {
+    switch (((r % 4) + 4) % 4) {
+      default:
+      case 0:
+        break;
+      case 1:
+        rotate_right();
+        break;
+      case 2:
+        reverse();
+        break;
+      case 3:
+        rotate_left();
+        break;
+    }
+  }
+
+  void rotate_right() {
+    transpose();
+    mirror();
+  }  // clockwise
+  void rotate_left() {
+    transpose();
+    flip();
+  }  // counterclockwise
+  void reverse() {
+    mirror();
+    flip();
+  }
   std::tuple<Reward, bool> terminated() {
     static constexpr uint64_t bonus_pattern[8] = {
         9151318806505701376ULL,  // 1st col
@@ -66,7 +131,7 @@ class Board {
   }
 
   std::tuple<Reward, bool> apply(int action) {
-    if(!legal(action)) std::cout << "ILLEGAL!\n";
+    if (!legal(action)) std::cout << "ILLEGAL!\n";
     auto&& [idxs, minus] = action2idx(action);
     for (auto& idx : idxs) {
       set(idx, get(idx) - minus);
@@ -78,43 +143,45 @@ class Board {
     raw = b.raw;
     return *this;
   };
-  int max_min_unit(){
+  int max_min_unit() {
     int max = 0;
-    for(const auto& idx : idxs){
+    for (const auto& idx : idxs) {
       int min = 100;
-      for(const auto& i : idx){
+      for (const auto& i : idx) {
         min = std::min(get(i), min);
       }
       max = std::max(max, min);
     }
     return max;
   }
-  int min_max_unit(){
+  int min_max_unit() {
     int min = 100;
-    for(int i = 0; i < 9; i++) min = std::min(get(i), min);
+    for (int i = 0; i < 9; i++) min = std::min(get(i), min);
     return min;
   };
 
-  const std::vector<Action> shuffle_legal_move(int low = 0, int N = 18) const { // TODO: Don't use! this is bugged.
+  const std::vector<Action> shuffle_legal_move(
+      int low = 0, int N = 18) const {  // TODO: Don't use! this is bugged.
     static std::random_device rd;
     static std::mt19937 gen(rd());
-    std::vector<int> numbers(N-low);
+    std::vector<int> numbers(N - low);
     std::iota(numbers.begin(), numbers.end(), low);
 
     // Shuffle the numbers randomly
     std::ranges::shuffle(numbers, gen);
-    auto view = numbers | std::views::filter([this](int action) { return legal(action); });
+    auto view = numbers | std::views::filter(
+                              [this](int action) { return legal(action); });
     return {view.begin(), view.end()};
   };
 
-  const std::array<std::tuple<int, int>, 6> min_of_each() const{
+  const std::array<std::tuple<int, int>, 6> min_of_each() const {
     std::array<std::tuple<int, int>, 6> result = {};
-    for(int i = 0; i < 6; i++){
+    for (int i = 0; i < 6; i++) {
       int min = std::numeric_limits<int>::infinity();
       int min_id = 0;
-      for(int j = 0; j < 3; j++){
+      for (int j = 0; j < 3; j++) {
         int val = get(idxs[i][j]);
-        if(val < min){
+        if (val < min) {
           min = val;
           min_id = j;
         }
@@ -123,9 +190,7 @@ class Board {
     }
     return result;
   }
-
 };
-
 
 std::ostream& operator<<(std::ostream& os, const Board& b) {
   for (int i = 0; i < 9; i++) {

@@ -59,7 +59,6 @@ std::tuple<float, float> test_player0(player& p1, player& p2,
   std::vector<float> max_time_p1, max_time_p2;
   for (int i_episode = 0; i_episode < num_to_play / 2; i_episode++) {
     Episode ep = PlayAnEpisode(p1, p2, 0, b_max, b_min);
-    std::cout << ep.size() << " ";
     max_time_p1.push_back(ep.max_time[0]);
     max_time_p2.push_back(ep.max_time[1]);
     if (ep.win() == 0) first_win++;
@@ -68,7 +67,6 @@ std::tuple<float, float> test_player0(player& p1, player& p2,
   int second_win = 0;
   for (int i_episode = 0; i_episode < num_to_play / 2; i_episode++) {
     Episode ep = PlayAnEpisode(p1, p2, 1, b_max, b_min);
-    std::cout << ep.size() << " ";
     max_time_p1.push_back(ep.max_time[0]);
     max_time_p2.push_back(ep.max_time[1]);
     if (ep.win() == 0) second_win++;

@@ -17,39 +17,30 @@ void td_learning(player& p1, player& p2, const std::string& load_path,
                  const size_t block, const size_t max_depth,
                  const size_t test_num) {
   static constexpr size_t max_ep_in_rb = 1;
-  std::cout << load_path;
-  // auto test_p1 = td_player();
-  // auto test_p2 = td_player();
-  auto test_p1 = heuristic_ab_player(max_depth);
-  auto test_p2 = heuristic_ab_player(max_depth);
-  (player&)test_p2 = (player&)p1;
+  int sim_count = 1000;
 
   std::vector<Episode> replay_buffer(4);
   clock_t begin_time = clock();
   for (int i_episode = 0; i_episode <= total; i_episode++) {
+    p2 = p1;
     if (i_episode % block == 0) {
-      auto&& [first_win_rate, second_win_rate] =
-          test_player0((player&)p1, (player&)(p2), 50, b_max, b_min);
-      if ((first_win_rate + second_win_rate)/2 >= 0.55) {
-        std::cout << "Accept model | ";
-        p2 = p1;
-      } else {
-        std::cout << "Reject model | ";
-        p1 = p2;
-      }
-      (player&)test_p1 = (player&)p1;
       float elapse = float(clock() - begin_time) / CLOCKS_PER_SEC;
-      std::cout << "Episode " << i_episode << " ( " << elapse << " sec) ";
-      test_player0((player&)test_p1, (player&)(test_p2), test_num, b_max,
+      std::cout << "Episode " << i_episode << " ( " << elapse << " sec) || vs. MCTS(" << sim_count << ") ";
+      auto test_player = mcts_player(sim_count);
+      auto&& [first, second] = test_player0((player&)p1, (player&)(test_player), test_num, b_max,
                    b_min, true);
+      if((first + second)/2 >= 0.55) {
+        sim_count += 1000;
+      }
       begin_time = clock();
     }
-    // Episode ep = PlayAnEpisode((player&)(p1), (player&)(p2), 0, b_max,
-    // b_min);
+    
     if (replay_buffer.size() >= max_ep_in_rb)
       replay_buffer.erase(replay_buffer.begin());
     replay_buffer.emplace_back(
         PlayAnEpisode((player&)(p1), (player&)(p2), 0, b_max, b_min));
+
+    // TD learning
     float target = 0;
     for (auto& ep : replay_buffer) {
       for (; ep.history.size(); ep.history.pop_back()) {
@@ -59,8 +50,6 @@ void td_learning(player& p1, player& p2, const std::string& load_path,
         target = reward - p1.evaluate(b_next);
       }
     }
-
-    p2 = p1;
   }
   
 };
@@ -106,12 +95,14 @@ int main(int argc, const char* argv[]) {
   }
   // static std::vector<Episode> replay_buffer;
   // replay_buffer.reserve(1000);
-  auto p1 = heuristic_ab_player(max_depth);
-  auto p2 = heuristic_ab_player(max_depth);
-  if (!load_path.empty()) p1.load(load_path);
+  // auto p1 = heuristic_ab_player(max_depth);
+  // auto p2 = heuristic_ab_player(max_depth);
+  // if (!load_path.empty()) p1.load(load_path);
 
   // auto p1 = td_player();
   // auto p2 = td_player();
+  auto p1 = heuristic_player(max_depth);
+  auto p2 = heuristic_player(max_depth);
   td_learning((player&)(p1), (player&)(p2), load_path, save_path, alpha, b_max,
               b_min, total, block, max_depth, test_num);
   p1.save(save_path);

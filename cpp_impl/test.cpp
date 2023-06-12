@@ -109,10 +109,23 @@ int main(int argc, const char* argv[]) {
   // replay_buffer.reserve(1000);
   // auto p1 = ab_player(max_depth);
   // p1.load("td-8M-ac-10k");
-  // auto p2 = heuristic_ab_player(max_depth);
-  // p2.load("td-8M-ac-10k");
-  auto p1 = mcts_ab_player();
-  auto p2 = mcts_player(6000);
-  auto&& [first_win_rate, second_win_rate] =
-          test_player0((player&)p1, (player&)p2, 20, 99, 50, true);
+  // // auto p2 = heuristic_ab_player(max_depth);
+  // // p2.load("td-8M-ac-10k");
+  // auto p2 = mcts_player(6000);
+  // auto&& [first_win_rate, second_win_rate] =
+  //         test_player0((player&)p1, (player&)p2, 20, 99, 50, true);
+
+  Board init_b;
+  for (int i = 0; i < 9; i++) {
+    init_b.set(i, 50 + (std::rand() % 50));
+  }
+  std::cout << init_b << std::endl;
+  init_b.transpose();
+  std::cout << init_b << std::endl;
+  init_b.transpose();
+  init_b.mirror();
+  std::cout << init_b << std::endl;
+  init_b.mirror();
+  init_b.flip();
+  std::cout << init_b << std::endl;
 }

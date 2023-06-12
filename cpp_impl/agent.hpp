@@ -43,7 +43,7 @@ class player {
       }
     }
   };
-  player& operator=(const player& who) {
+  virtual player& operator=(const player& who) {
     for (int i = 0; i < feat_num; i++) {
       std::copy(who.n_tuple_net[i].begin(), who.n_tuple_net[i].end(),
                 n_tuple_net[i].begin());
@@ -51,7 +51,7 @@ class player {
     return *this;
   }
 
-  void save(const std::string& path) {
+  virtual void save(const std::string& path) {
     for (int i = 0; i < feat_num; i++) {
       std::ofstream out;
       out.open((path + "/" + std::to_string(i) + ".bin").c_str(),
@@ -63,7 +63,7 @@ class player {
       }
     }
   };
-  void load(const std::string& path) {
+  virtual void load(const std::string& path) {
     for (int i = 0; i < feat_num; i++) {
       std::ifstream in;
       in.open((path + "/" + std::to_string(i) + ".bin").c_str(),
@@ -96,9 +96,7 @@ class td_player : public player {
   virtual Board::Action generate(Board& b) {
     int best_action = -1;
     float best_value = -std::numeric_limits<float>::infinity();
-    for (auto& action : ShuffleActions() | std::views::filter([&b](int action) {
-                          return b.legal(action);
-                        })) {
+    for (auto& action : b.shuffle_legal_move()) {
       auto b_ = b;
       // if (!b_.legal(action)) continue;
       auto&& [reward, done] = b_.apply(action);
@@ -123,9 +121,7 @@ class ab_player : public td_player {
     float best_value = -std::numeric_limits<float>::infinity();
     // for (auto& action :
     //      ShuffleActions()
-    for (auto& action : ShuffleActions() | std::views::filter([&b](int action) {
-                          return b.legal(action);
-                        })) {
+    for (auto& action : b.shuffle_legal_move()) {
       auto b_ = b;
       // if (!b_.legal(action)) continue;
       auto&& [reward, done] = b_.apply(action);
@@ -150,9 +146,7 @@ Board::Reward ab_player::alphaBetaMax(Board b, Board::Reward alpha,
                                       Board::Reward beta, int depthleft) {
   if (depthleft == 0)
     return evaluate(b);  // Reach end depth or terminal condition.
-  for (const auto& action :
-       ShuffleActions()  // std::views::iota(18)
-           | std::views::filter([&b](int action) { return b.legal(action); })) {
+  for (const auto& action : b.shuffle_legal_move()) {
     Board b_ = b;
 
     auto&& [r, done] = b_.apply(action);
@@ -168,10 +162,7 @@ Board::Reward ab_player::alphaBetaMax(Board b, Board::Reward alpha,
 Board::Reward ab_player::alphaBetaMin(Board b, Board::Reward alpha,
                                       Board::Reward beta, int depthleft) {
   if (depthleft == 0) return -evaluate(b);
-  for (const auto& action :
-       ShuffleActions()  // std::views::iota(18)
-                         // | std::views::reverse
-           | std::views::filter([&b](int action) { return b.legal(action); })) {
+  for (const auto& action : b.shuffle_legal_move()) {
     Board b_ = b;
     auto&& [r, done] = b_.apply(action);
     int score = -r + (done ? 0 : alphaBetaMax(b_, alpha, beta, depthleft - 1));
@@ -206,11 +197,7 @@ class heuristic_ab_player : public player {
     if (depthleft == 0) return -evaluate(b);
     int low = b.max_min_unit() > threshold ? 12 : 0;
     int N = b.max_min_unit() > threshold ? 18 : 18;
-    for (const auto& action : ShuffleActions(low, N)  // std::views::iota(18)
-                                                      // | std::views::reverse
-                                  | std::views::filter([&b](int action) {
-                                      return b.legal(action);
-                                    })) {
+    for (const auto& action : b.shuffle_legal_move(low, N)) {
       Board b_ = b;
       auto&& [r, done] = b_.apply(action);
       int score =
@@ -228,10 +215,7 @@ class heuristic_ab_player : public player {
       return evaluate(b);  // Reach end depth or terminal condition.
     int low = b.max_min_unit() > threshold ? 12 : 0;
     int N = b.max_min_unit() > threshold ? 18 : 18;
-    for (const auto& action : ShuffleActions(low, N)  // std::views::iota(18)
-                                  | std::views::filter([&b](int action) {
-                                      return b.legal(action);
-                                    })) {
+    for (const auto& action : b.shuffle_legal_move(low, N)) {
       Board b_ = b;
 
       auto&& [r, done] = b_.apply(action);
@@ -352,25 +336,41 @@ class nega_player : public player {
 
 class heuristic_player : public nega_player {
  public:
-  std::array<float, 300 * 300 * 300> net;
-  heuristic_player(int max_depth) : nega_player(max_depth){};
+  std::array<float, 300 * 300 * 300>* net;
+  heuristic_player(int max_depth) : nega_player(max_depth){
+    net = new std::array<float, 300 * 300 * 300>();
+  };
+  ~heuristic_player() { delete net; }
   virtual float evaluate(const Board& b) {
     float val = 0;
     auto min_of_each = b.min_of_each();
-    int feat = 0;
-    for (int i = 0; i < 3; i++) {
-      feat *= 300;
-      auto& [min_id, min] = min_of_each[i];
-      feat += min + min_id * 100;
+    for (int init : {0, 3}) {
+      int feat = 0;
+      for (int i = init; i < 3; i++) {
+        feat *= 300;
+        auto& [min_id, min] = min_of_each[i];
+        feat += min + min_id * 100;
+      }
+      val += (*net)[feat];
     }
-    val += net[feat];
-    feat = 0;
-    for (int i = 3; i < 6; i++) {
-      feat *= 300;
-      auto& [min_id, min] = min_of_each[i];
-      feat += min + min_id * 100;
-    }
-    val += net[feat];
     return val;
   }
+  virtual void save(const std::string& path) {
+    std::ofstream out;
+    out.open((path + "/weight.bin").c_str(),
+             std::ios::out | std::ios::binary | std::ios::trunc);
+    if (out.is_open()) {
+      out.write((char*)(net->data()), net->size());
+      out.flush();
+      out.close();
+    }
+  };
+  virtual void load(const std::string& path) {
+    std::ifstream in;
+    in.open((path + "/weight.bin").c_str(), std::ios::in | std::ios::binary);
+    if (in.is_open()) {
+      in.read((char*)(net->data()), net->size());
+      in.close();
+    }
+  };
 };
