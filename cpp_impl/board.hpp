@@ -5,6 +5,7 @@
 class Board {
  private:
  public:
+  Board(uint64_t raw = 0) : raw(raw){};
   using Reward = float;
   using Action = int;
   uint64_t raw = 0;
@@ -25,10 +26,11 @@ class Board {
   static constexpr int idxs[6][3] = {{0, 1, 2}, {3, 4, 5}, {6, 7, 8},
                                      {0, 3, 6}, {1, 4, 7}, {2, 5, 8}};
 
-  const std::tuple<const int (&)[3], const int> action2idx(int action) const {
+  inline const std::tuple<const int (&)[3], const int> action2idx(
+      int action) const {
     return {idxs[action % 6], /*minus= */ action / 6 + 1};
   }
-  bool legal(int action) const {  // TODO: Use `pext` to accelerate
+  inline const bool legal(int action) const {  // TODO: Use `pext` to accelerate
     auto&& [idxs, minus] = action2idx(action);
     bool legal = true;
     for (auto& idx : idxs) {
@@ -37,7 +39,7 @@ class Board {
     return legal;
   };
 
-  void transpose() {
+  inline void transpose() {
     static constexpr uint64_t diag =
         0b0'1111111'0000000'0000000'0000000'1111111'0000000'0000000'0000000'1111111;
     static constexpr uint64_t bottom =
@@ -51,7 +53,7 @@ class Board {
     raw = (raw & diag) | ((raw & bottom) << 14) | ((raw & upper) >> 14) |
           ((raw & left_corner) << 28) | ((raw & right_corner) >> 28);
   };
-  void mirror() {
+  inline void mirror() {
     static constexpr uint64_t first_col =
         0b0'1111111'0000000'0000000'1111111'0000000'0000000'1111111'0000000'0000000;
     static constexpr uint64_t second_col =
@@ -61,7 +63,7 @@ class Board {
     raw =
         (raw & second_col) | (raw & first_col) >> 14 | (raw & third_col) << 14;
   }
-  void flip() {
+  inline void flip() {
     static constexpr uint64_t first_row =
         0b0'1111111'1111111'1111111'0000000'0000000'0000000'0000000'0000000'0000000;
     static constexpr uint64_t second_row =
@@ -71,46 +73,51 @@ class Board {
     raw =
         (raw & second_row) | (raw & first_row) >> 42 | (raw & third_row) << 42;
   }
-  void rotate(int r = 1) {
-    switch (((r % 4) + 4) % 4) {
-      default:
-      case 0:
-        break;
-      case 1:
-        rotate_right();
-        break;
-      case 2:
-        reverse();
-        break;
-      case 3:
-        rotate_left();
-        break;
-    }
-  }
 
-  void rotate_right() {
+  inline void rotate_right() {
     transpose();
     mirror();
   }  // clockwise
-  void rotate_left() {
+  inline void rotate_left() {
     transpose();
     flip();
   }  // counterclockwise
-  void reverse() {
+  inline void reverse() {
     mirror();
     flip();
   }
+
+  inline uint64_t hash() const {
+    auto b = Board(raw);
+    uint64_t h = 0xffffffffffffffffull;
+    for (int i = 0; i < 4; i++) {
+      if (b.raw < h) {
+        h = b.raw;
+      }
+      b.rotate_right();
+    }
+    b.mirror();
+    for (int i = 0; i < 4; i++) {
+      if (b.raw < h) {
+        h = b.raw;
+      }
+      b.rotate_right();
+    }
+    return h;
+  }
+
   std::tuple<Reward, bool> terminated() {
     static constexpr uint64_t bonus_pattern[8] = {
-        9151318806505701376ULL,  // 1st col
-        71494678175825792ULL,    // 2nd col
-        558552173248639ULL,      // 3rd col
-        9223367638808264704ULL,  // 1st row
-        4398044413952ULL,        // 2nd row
-        2097151ULL,              // 3rd row
-        9151314476908150911ULL,  // diag
-        558586000293888ULL,      // flipped-diag
+        0b0'1111111'0000000'0000000'1111111'0000000'0000000'1111111'0000000'0000000ULL,  // 3rd col
+        0b0'0000000'1111111'0000000'0000000'1111111'0000000'0000000'1111111'0000000ULL,  // 2nd col
+        0b0'0000000'0000000'1111111'0000000'0000000'1111111'0000000'0000000'1111111ULL,  // 1st col
+        0b0'1111111'1111111'1111111'0000000'0000000'0000000'0000000'0000000'0000000ULL,  // 3rd row
+        0b0'0000000'0000000'0000000'1111111'1111111'1111111'0000000'0000000'0000000ULL,  // 2nd row
+        0b0'0000000'0000000'0000000'0000000'0000000'0000000'1111111'1111111'1111111ULL,  // 1st row
+        0b0'1111111'0000000'0000000'0000000'1111111'0000000'0000000'0000000'1111111ULL,  // diag
+        0b0'0000000'0000000'1111111'0000000'1111111'0000000'1111111'0000000'0000000ULL,  // flipped-diag
     };
+
     static constexpr Reward bonus = 15;
     static constexpr Reward penalty = -7;
 
@@ -133,9 +140,18 @@ class Board {
   std::tuple<Reward, bool> apply(int action) {
     if (!legal(action)) std::cout << "ILLEGAL!\n";
     auto&& [idxs, minus] = action2idx(action);
-    for (auto& idx : idxs) {
-      set(idx, get(idx) - minus);
-    }
+    static constexpr uint64_t row_or_col[6] = {
+        0b0'0000000'0000000'0000000'0000000'0000000'0000000'0000001'0000001'0000001ULL,  // 1st row
+        0b0'0000000'0000000'0000000'0000001'0000001'0000001'0000000'0000000'0000000ULL,  // 2nd row
+        0b0'0000001'0000001'0000001'0000000'0000000'0000000'0000000'0000000'0000000ULL,  // 3rd row
+        0b0'0000000'0000000'0000001'0000000'0000000'0000001'0000000'0000000'0000001ULL,  // 1st col
+        0b0'0000000'0000001'0000000'0000000'0000001'0000000'0000000'0000001'0000000ULL,  // 2nd col
+        0b0'0000001'0000000'0000000'0000001'0000000'0000000'0000001'0000000'0000000ULL,  // 3rd col
+    };
+    // for (auto& idx : idxs) {
+    //   set(idx, get(idx) - minus);
+    // }
+    raw -= minus * row_or_col[action % 6];
     auto&& [rt, done] = terminated();
     return {rt - minus, done};
   };
@@ -160,8 +176,7 @@ class Board {
     return min;
   };
 
-  const std::vector<Action> shuffle_legal_move(
-      int low = 0, int N = 18) const {  // TODO: Don't use! this is bugged.
+  std::vector<Action> shuffle_legal_move(int low = 0, int N = 18) const {
     static std::random_device rd;
     static std::mt19937 gen(rd());
     std::vector<int> numbers(N - low);
