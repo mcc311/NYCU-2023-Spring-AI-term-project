@@ -57,8 +57,10 @@ int main(int argc, const char* argv[]) {
   // p1.load("td-8M-ac-10k");
   // auto p2 = heuristic_ab_player(max_depth);
   // p2.load("td-8M-ac-10k");
-  auto p1 = nega_player(10, false);
-  auto p2 = pvs_player(10, false);
+  // auto p1 = nega_player(10, false);
+  // auto p2 = pvs_player(10, false);
+  auto p1 = mcts_player(1000);
+  auto p2 = mcts_player(1000);
   auto&& [first_win_rate, second_win_rate] =
           test_player0((player&)p1, (player&)p2, 10, 99, 50, false);
 

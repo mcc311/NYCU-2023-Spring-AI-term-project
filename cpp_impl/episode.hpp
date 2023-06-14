@@ -1,9 +1,11 @@
 #pragma once
 #include <numeric>
 #include <vector>
-
+#include <time.h>
+#include <iostream>
 #include "agent.hpp"
 #include "board.hpp"
+
 class Episode {
  public:
   using Step = std::tuple<Board::Action, Board::Reward,
@@ -23,13 +25,13 @@ class Episode {
     if (scores[0] < scores[1]) return 1;
     return -1;
   };
-  void save(const std::string& filename) {
+  void save(const int i, const std::string& filename) {
     std::ofstream out(filename, std::ios::app);
-    out << init_state.raw << " ";
+    out << i << " " << scores[0] << " " << scores[1] << " " << time << " " << init_state.raw << " ";
     for (auto&& [action, reward, state] : history) {
       out << action << " " << reward << " " << state.raw << " ";
     }
-    out << scores[0] << " " << scores[1] << " " << time << "\n";
+    out <<  "\n";
     out.close();
   }
 };
