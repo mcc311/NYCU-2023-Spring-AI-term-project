@@ -1,14 +1,23 @@
 #pragma once
 #include <iostream>
 #include <vector>
-
+class Episode;
 class Board {
+  friend class Episode;
+
  private:
+  uint64_t raw = 0;
+
  public:
   Board(uint64_t raw = 0) : raw(raw){};
+  Board(std::vector<std::vector<int> > board) {
+    for (int i = 0; i < 9; i++) {
+      set(i, board[i / 3][i % 3]);
+    }
+  };
   using Reward = float;
   using Action = int;
-  uint64_t raw = 0;
+  using Hash = uint64_t;
 
   inline int get(const int index, const int isomorphic = 0) const noexcept {
     static constexpr int isom_table[8][9] = {
@@ -148,9 +157,6 @@ class Board {
         0b0'0000000'0000001'0000000'0000000'0000001'0000000'0000000'0000001'0000000ULL,  // 2nd col
         0b0'0000001'0000000'0000000'0000001'0000000'0000000'0000001'0000000'0000000ULL,  // 3rd col
     };
-    // for (auto& idx : idxs) {
-    //   set(idx, get(idx) - minus);
-    // }
     raw -= minus * row_or_col[action % 6];
     auto&& [rt, done] = terminated();
     return {rt - minus, done};
@@ -176,14 +182,23 @@ class Board {
     return min;
   };
 
-  std::vector<Action> shuffle_legal_move(int low = 0, int N = 18) const {
+  std::vector<Action> shuffle_legal_move(bool heuristic = false, int low = 0,
+                                         int N = 18) const {
     static std::random_device rd;
     static std::mt19937 gen(rd());
-    std::vector<int> numbers(N - low);
+    std::vector<int> numbers(N - low, 0);
     std::iota(numbers.begin(), numbers.end(), low);
+    if (heuristic) {
+      // std::reverse(numbers.begin(), numbers.end());
+      for (int i = 0; i < 3; i++) {
+        std::shuffle(numbers.begin() + i * 6, numbers.begin() + (i + 1) * 6,
+                     gen);
+      }
+    } else {
+      std::shuffle(numbers.begin(), numbers.end(), gen);
+    }
 
     // Shuffle the numbers randomly
-    std::ranges::shuffle(numbers, gen);
     auto view = numbers | std::views::filter(
                               [this](int action) { return legal(action); });
     return {view.begin(), view.end()};

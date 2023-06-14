@@ -1,6 +1,9 @@
 #include <ctime>
 #include <iostream>
 #include <vector>
+#include <climits>
+#include "agent.hpp"
+#include "board.hpp"
 
 using namespace std;
 
@@ -143,7 +146,7 @@ bool check_game_end(vector<vector<int>>& Board, bool& dead_end) {
   return game_end;
 }
 
-void make_your_move(vector<vector<int>> Board, int& row_or_col, int& subtract) {
+void make_your_move(vector<vector<int>> Board_, int& row_or_col, int& subtract) {
   //*********
   // TODO HERE:
   // 1.You CANNOT directly modify "Board" in this function
@@ -152,21 +155,24 @@ void make_your_move(vector<vector<int>> Board, int& row_or_col, int& subtract) {
   // 3rd_row -> 0, 1, 2 ; 1st_col, 2nd_col, 3rd_col -> 3, 4, 5 subtract: number
   // to subtract, should be 1, 2 or 3 (don't forget restriction!)
   //*********
-  row_or_col = 3;
-  subtract = 1;
+  static auto player = mcts_player(5000, true);
+  Board b = Board(Board_);
+  auto action = player.generate(b);
+  b.apply(action);
+  std::cout << b << std::endl;
+  row_or_col = action % 6;
+  subtract = action/6 + 1;
 
-  // cin >> row_or_col;
-  // cin.get();
-  // cin >> subtract;
-  // cin.get();
 }
 
-void opponent_move(vector<vector<int>> Board, int& row_or_col, int& subtract) {
-  cin >> row_or_col;
-  cin.get();
-
-  cin >> subtract;
-  cin.get();
+void opponent_move(vector<vector<int>> Board_, int& row_or_col, int& subtract) {
+  static auto player = mcts_player(5000);
+  Board b = Board(Board_);
+  auto action = player.generate(b);
+  b.apply(action);
+  std::cout << b << std::endl;
+  row_or_col = action % 6;
+  subtract = action/6 + 1;
 }
 
 int main() {
@@ -189,7 +195,7 @@ int main() {
     cout << "Current Board:" << endl;
     print_Board(Board);
     cout << endl << "Player " << player << "'s turn:" << endl;
-    system("pause");
+    // system("pause");
 
     int row_or_col;  // row1, row2, row3 -> 0, 1, 2 ; col1, col2, col3 -> 3, 4,
                      // 5
@@ -222,7 +228,7 @@ int main() {
       cout << "The move is vaild." << endl;
     else
       cout << "The move is invalid, game over." << endl;
-    system("pause");
+    // system("pause");
 
     Board_subtract(Board, row_or_col, subtract);
 
@@ -256,7 +262,7 @@ int main() {
 
   cout << "Player 0 total cost: " << total_cost[0] << endl;
   cout << "Player 1 total cost: " << total_cost[1] << endl;
-  system("pause");
+  // system("pause");
 
   return 0;
 }

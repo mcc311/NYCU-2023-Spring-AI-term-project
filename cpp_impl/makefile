@@ -1,4 +1,4 @@
 all:
-	g++ main.cpp  -o main -std=c++20 -O3
-clear:
-   
+	g++ train.cpp  -o train -std=c++20 -O3
+train:
+   g++ generate.cpp  -o generate -std=c++20 -O3

@@ -12,17 +12,17 @@
 class Node {
  public:
   Board state;   // St
-  float reward;  // Rt
+  Board::Reward reward;  // Rt
   bool terminated;
   Board::Action action;
 
-  float total_score;  // Rt+1 - Rt+2 + Rt+3 - Rt+4 +..., for all simulations
+  Board::Reward total_score;  // Rt+1 - Rt+2 + Rt+3 - Rt+4 +..., for all simulations
   int visits;
   std::vector<Node*> children;
   Node* parent;
   // Constructor
   Node(const Board& state, const Board::Action action = -1,
-       const float reward = 0.0f, const bool done = false,
+       const Board::Reward reward = 0.0f, const bool done = false,
        Node* parent = nullptr)
       : state(state),
         reward(reward),
@@ -40,26 +40,25 @@ class Node {
       this->children.push_back(child);
     }
   };
-  float value() { return reward - total_score / (visits + 1e-5); }
+  Board::Reward value() { return reward - total_score / (visits + 1e-5); }
   Node* select() {
     Node* current = this;
 
     while (!current->terminated && !current->children.empty()) {
-      float best_ucb1 = -std::numeric_limits<float>::infinity();
+      Board::Reward best_ucb1 = -std::numeric_limits<Board::Reward>::infinity();
       Node* best_child = nullptr;
 
       auto [min_value, max_value] = std::ranges::minmax(
           std::views::transform(current->children, &Node::value));
-      // std::cout << min_value << ' ' << max_value << '\n';
 
       for (auto* child : current->children) {
         if (child->visits == 0 || current->children.size() == 1) {
           best_child = child;
           break;
         }
-        float value = (child->value() - min_value + 1e-3) /
+        Board::Reward value = (child->value() - min_value + 1e-3) /
                       (max_value - min_value + 1e-3);
-        float ucb1 =
+        Board::Reward ucb1 =
             value + 1.25 * std::sqrt(2.0f * std::log(current->visits + 1e-5) /
                                      (child->visits + 1e-5));
         if (ucb1 > best_ucb1) {
@@ -72,12 +71,12 @@ class Node {
 
     return current;
   };
-  float rollout() {
+  Board::Reward rollout() {
     Board current = this->state;
     if (this->terminated) return 0.0f;
     bool done = false;
     int who = 1;
-    float score = 0;
+    Board::Reward score = 0;
 
     while (!done) {
       for (const auto& action : current.shuffle_legal_move()) {
@@ -90,7 +89,7 @@ class Node {
     }
     return score;
   };
-  void backpropagate(float score) {
+  void backpropagate(Board::Reward score) {
     Node* current = this;
     while (current != nullptr) {
       current->visits++;
@@ -110,18 +109,18 @@ Board::Action monte_carlo_tree_search(const Board& state, int sim_count) {
   for (int i = 0; i < sim_count; i++) {
     Node* selected = root->select();
     selected->expand();
-    float score = selected->rollout();
+    Board::Reward score = selected->rollout();
     selected->backpropagate(score);
   }
 
   // Select the best action based on the statistics of the root Node's children
-  float best_reward = -std::numeric_limits<float>::infinity();
+  Board::Reward best_reward = -std::numeric_limits<Board::Reward>::infinity();
   Board::Action best_action = -1;
 
   for (auto* child : root->children) {
-    float avg_score =
+    Board::Reward avg_score =
         child->reward - child->total_score / (child->visits + 1e-5);
-    // float avg_score = child->visits + 1e-5;
+    // Board::Reward avg_score = child->visits + 1e-5;
     if (avg_score > best_reward) {
       best_reward = avg_score;
       best_action = child->action;
