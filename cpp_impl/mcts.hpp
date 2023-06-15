@@ -118,9 +118,7 @@ Board::Action monte_carlo_tree_search(const Board& state, int sim_count) {
   Board::Action best_action = -1;
 
   for (auto* child : root->children) {
-    Board::Reward avg_score =
-        child->reward - child->total_score / (child->visits + 1e-5);
-    // Board::Reward avg_score = child->visits + 1e-5;
+    Board::Reward avg_score = child->value();
     if (avg_score > best_reward) {
       best_reward = avg_score;
       best_action = child->action;
@@ -128,4 +126,26 @@ Board::Action monte_carlo_tree_search(const Board& state, int sim_count) {
   }
   delete root;
   return best_action;
+}
+
+Board::Reward mcts_estimate(const Board& state, int sim_count) {
+  Node* root = new Node(state);
+  root->expand();
+
+  for (int i = 0; i < sim_count; i++) {
+    Node* selected = root->select();
+    selected->expand();
+    Board::Reward score = selected->rollout();
+    selected->backpropagate(score);
+  }
+
+  Board::Reward best_reward = -std::numeric_limits<Board::Reward>::infinity();
+  for (auto* child : root->children) {
+    Board::Reward avg_score = child->value();
+    if (avg_score > best_reward) {
+      best_reward = avg_score;
+    }
+  }
+  delete root;
+  return best_reward;
 }

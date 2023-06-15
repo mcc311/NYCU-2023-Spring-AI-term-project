@@ -12,33 +12,36 @@
 #include "board.hpp"
 #include "utils.hpp"
 
-class Net {
- public:
-  Net() = default;
-  virtual void load(const std::string& load_path){};
-  virtual void save(const std::string& save_path){};
-  virtual void update(const Board& b, const float error, const float alpha){};
-  virtual float evaluate(const Board& b) const {};
-};
-
 template <int FEAT_SIZE, int FEAT_NUM>
-class NTuple : public Net {
+class TupleNet {
  private:
   static constexpr int NUM_RANGE = 100;
   static constexpr size_t net_size =
       static_cast<size_t>(std::pow(NUM_RANGE, FEAT_SIZE));
 
  public:
-  NTuple(){init();};
-  NTuple(const std::string& load_path);
-  void init() { values.fill(new Board::Reward[net_size]); }
-  ~NTuple() {
-    // for (auto& v : values) delete[] v;
+  TupleNet() {
+    for (auto& v : values) {
+      v = new Board::Reward[net_size];
+      std::fill(v, v + net_size, 0);
+    }
+    weights.fill(1.0f);
   };
-  void load(const std::string& load_path) override;
-  void save(const std::string& save_path) override;
-  float evaluate(const Board& b) const override;
-  void update(const Board& b, const float error, const float alpha) override;
+  TupleNet(const std::string& load_path);
+  TupleNet(const std::array<std::array<int, FEAT_SIZE>, FEAT_NUM>& feat_idx_)
+      : TupleNet() {
+    feat_idx = feat_idx_;
+  };
+  ~TupleNet(){
+      // for (auto& v : values) delete[] v;
+  };
+  void load(const std::string& load_path);
+  void save(const std::string& save_path);
+  Board::Reward evaluate(const Board& b) const;
+  void update_net(const Board& b, const Board::Reward error,
+                  const Board::Reward lr);
+  void update_weights(const Board& b, const Board::Reward error,
+                      const Board::Reward lr, const Board::Reward lambda);
   auto get_feats(const Board& b) const {
     std::vector<std::pair<int, uint32_t>> result;
     for (int i = 0; i < FEAT_NUM; i++) {
@@ -58,22 +61,27 @@ class NTuple : public Net {
     feat_idx = feat_idx_;
   }
 
- private:
+ public:
   // n tuple value array
   std::array<Board::Reward*, FEAT_NUM> values;
   // feature index array
   std::array<std::array<int, FEAT_SIZE>, FEAT_NUM> feat_idx;
 
+  std::array<Board::Reward, FEAT_NUM> weights;
+
+  std::array<Board::Reward, FEAT_NUM> gradient_weights;
+
   int isom_num = 8;
 };
 
 template <int FEAT_SIZE, int FEAT_NUM>
-NTuple<FEAT_SIZE, FEAT_NUM>::NTuple(const std::string& load_path) {
+TupleNet<FEAT_SIZE, FEAT_NUM>::TupleNet(const std::string& load_path)
+    : TupleNet() {
   load(load_path);
 };
 
 template <int FEAT_SIZE, int FEAT_NUM>
-void NTuple<FEAT_SIZE, FEAT_NUM>::save(const std::string& save_path) {
+void TupleNet<FEAT_SIZE, FEAT_NUM>::save(const std::string& save_path) {
   std::ofstream ofs(save_path,
                     std::ios::out | std::ios::binary | std::ios::trunc);
   if (!ofs.is_open()) {
@@ -91,7 +99,7 @@ void NTuple<FEAT_SIZE, FEAT_NUM>::save(const std::string& save_path) {
 };
 
 template <int FEAT_SIZE, int FEAT_NUM>
-void NTuple<FEAT_SIZE, FEAT_NUM>::load(const std::string& load_path) {
+void TupleNet<FEAT_SIZE, FEAT_NUM>::load(const std::string& load_path) {
   std::ifstream ifs(load_path);
   if (!ifs.is_open()) {
     std::cout << "Cannot open file " << load_path << std::endl;
@@ -109,19 +117,36 @@ void NTuple<FEAT_SIZE, FEAT_NUM>::load(const std::string& load_path) {
 
 // evaluate the board
 template <int FEAT_SIZE, int FEAT_NUM>
-Board::Reward NTuple<FEAT_SIZE, FEAT_NUM>::evaluate(const Board& b) const {
+Board::Reward TupleNet<FEAT_SIZE, FEAT_NUM>::evaluate(const Board& b) const {
   Board::Reward value = 0;
   for (const auto& [i, feat] : get_feats(b)) {
-    value += values[i][feat];
+    value += values[i][feat] * weights[i];
   }
-  return value / (FEAT_NUM * isom_num);
+  return value;
 };
 
 // update the n tuple
 template <int FEAT_SIZE, int FEAT_NUM>
-void NTuple<FEAT_SIZE, FEAT_NUM>::update(const Board& b, const float error,
-                                         const float alpha) {
+void TupleNet<FEAT_SIZE, FEAT_NUM>::update_net(const Board& b,
+                                               const Board::Reward error,
+                                               const Board::Reward lr) {
   for (const auto& [i, feat] : get_feats(b)) {
-    values[i][feat] += alpha * error;
+    values[i][feat] += lr * error / (FEAT_NUM * isom_num);
+  }
+};
+
+// update the n tuple
+template <int FEAT_SIZE, int FEAT_NUM>
+void TupleNet<FEAT_SIZE, FEAT_NUM>::update_weights(const Board& b,
+                                                   const Board::Reward error,
+                                                   const Board::Reward lr,
+                                                   const Board::Reward lambda) {
+  gradient_weights.fill(0.0f);
+  for (const auto& [i, feat] : get_feats(b)) {
+    gradient_weights[i] +=
+        2 * (-error) * values[i][feat] + (2 * lambda * weights[i]) / (isom_num);
+  }
+  for (int i = 0; i < FEAT_NUM; i++) {
+    weights[i] -= lr * gradient_weights[i];
   }
 };

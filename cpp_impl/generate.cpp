@@ -8,6 +8,7 @@
 // use `mcts_player` generate `episode`, and save them in file, with format like
 // this: state(uint64_t) action(int) state(uint64_t) action(int) ...
 int main(int argc, const char* argv[]) {
+  std::srand(std::time(nullptr));
   std::copy(argv, argv + argc,
             std::ostream_iterator<const char*>(std::cout, " "));
   std::cout << std::endl;
