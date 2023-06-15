@@ -185,50 +185,51 @@ class pvs_player : public nega_player {
     return best_action;
   };
 };
-
-class hybrid_player : nega_player {
+#define c (std::cout << __LINE__ << std::endl)
+class hybrid_player : nega_player { 
  public:
   int time_limit;
   hybrid_player(int time_limit = 59) : nega_player(), time_limit(time_limit){};
   virtual Board::Action generate(Board& b) override {
-    Board::Action negamax_result;
-    bool negamax_done = false;
-    std::thread negamaxThread([&]() {
-      negamax_result = nega_player::generate(b);
-      negamax_done = true;
-    });
-
-    Board::Action mcts_result;
-    std::thread mctsThread([&]() {
-      Node* root = new Node(b);
-      root->expand();
-
-      std::chrono::steady_clock::time_point start =
+c;    Board::Action negamax_result;
+c;    bool negamax_done = false;
+c;    std::thread negamaxThread([&]() {
+c;      negamax_result = nega_player::generate(b);
+c;      negamax_done = true;
+c;    });
+c;
+c;    Board::Action mcts_result;
+c;    std::thread mctsThread([&]() {
+c;      Node* root = new Node(b);
+c;      root->expand();
+c;
+c;      std::chrono::steady_clock::time_point start =
           std::chrono::steady_clock::now();
-      while (std::chrono::steady_clock::now() - start <
-             std::chrono::seconds(time_limit) && !negamax_done) {
-        Node* selected = root->select();
-        selected->expand();
-        Board::Reward score = selected->rollout();
-        selected->backpropagate(score);
-      }
-
-      Board::Reward best_reward =
+c;      while (std::chrono::steady_clock::now() - start <
+            std::chrono::seconds(time_limit) && !negamax_done) {
+c;        Node* selected = root->select();
+c;        selected->expand();
+c;        Board::Reward score = selected->rollout();
+c;        selected->backpropagate(score);
+c;      }
+c;
+c;      Board::Reward best_reward =
           -std::numeric_limits<Board::Reward>::infinity();
-      for (auto* child : root->children) {
-        Board::Reward avg_score = child->value();
-        if (avg_score > best_reward) {
-          best_reward = avg_score;
-          mcts_result = child->action;
-        }
-      }
-    });
-
-    // Wait for either thread to finish
-    if (negamaxThread.joinable()) negamaxThread.join();
-    if (mctsThread.joinable()) mctsThread.join();
-
-    // Return the result from the finished thread
-    return (negamax_done) ? negamax_result : mcts_result;
+c;      for (auto* child : root->children) {
+c;        Board::Reward avg_score = child->value();
+c;        if (avg_score > best_reward) {
+c;          best_reward = avg_score;
+c;          mcts_result = child->action;
+c;        }
+c;      }
+        delete root;
+c;    });
+c;
+c;    // Wait for either thread to finish
+c;    if (negamaxThread.joinable()) negamaxThread.join();
+c;    if (mctsThread.joinable()) mctsThread.join();
+c;
+c;    // Return the result from the finished thread
+c;    return (negamax_done) ? negamax_result : mcts_result;
   }
 };
