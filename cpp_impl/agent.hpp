@@ -191,11 +191,14 @@ class hybrid_player : nega_player {
   int time_limit;
   hybrid_player(int time_limit = 59) : nega_player(), time_limit(time_limit){};
   virtual Board::Action generate(Board& b) override {
-    Board::Action negamaxResult;
-    std::thread negamaxThread(
-        [&]() { negamaxResult = nega_player::generate(b); });
+    Board::Action negamax_result;
+    bool negamax_done = false;
+    std::thread negamaxThread([&]() {
+      negamax_result = nega_player::generate(b);
+      negamax_done = true;
+    });
 
-    Board::Action mctsResult;
+    Board::Action mcts_result;
     std::thread mctsThread([&]() {
       Node* root = new Node(b);
       root->expand();
@@ -203,7 +206,7 @@ class hybrid_player : nega_player {
       std::chrono::steady_clock::time_point start =
           std::chrono::steady_clock::now();
       while (std::chrono::steady_clock::now() - start <
-             std::chrono::seconds(time_limit)) {
+             std::chrono::seconds(time_limit) && !negamax_done) {
         Node* selected = root->select();
         selected->expand();
         Board::Reward score = selected->rollout();
@@ -216,7 +219,7 @@ class hybrid_player : nega_player {
         Board::Reward avg_score = child->value();
         if (avg_score > best_reward) {
           best_reward = avg_score;
-          mctsResult = child->action;
+          mcts_result = child->action;
         }
       }
     });
@@ -226,6 +229,6 @@ class hybrid_player : nega_player {
     if (mctsThread.joinable()) mctsThread.join();
 
     // Return the result from the finished thread
-    return (negamaxThread.joinable()) ? negamaxResult : mctsResult;
+    return (negamax_done) ? negamax_result : mcts_result;
   }
 };
