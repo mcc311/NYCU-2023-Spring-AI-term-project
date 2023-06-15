@@ -194,7 +194,6 @@ class hybrid_player : nega_player {
     Board::Action negamaxResult;
     std::thread negamaxThread(
         [&]() { negamaxResult = nega_player::generate(b); });
-    negamaxThread.detach();
 
     Board::Action mctsResult;
     std::thread mctsThread([&]() {
@@ -221,17 +220,12 @@ class hybrid_player : nega_player {
         }
       }
     });
-    mctsThread.detach();
 
-    // Since threads are detached, we don't join them
-    // The main thread continues execution and doesn't wait for threads to
-    // finish
+    // Wait for either thread to finish
+    if (negamaxThread.joinable()) negamaxThread.join();
+    if (mctsThread.joinable()) mctsThread.join();
 
-    // Return a default value or handle the case where neither thread finishes
-    // in time
-    // ...
-
-    return mctsResult;  // Returning mctsResult as an example, handle the case
-                        // appropriately
+    // Return the result from the finished thread
+    return (negamaxThread.joinable()) ? negamaxResult : mctsResult;
   }
 };
