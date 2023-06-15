@@ -8,3 +8,4 @@ main
 tst
 *.episode
 *.gch
+*.exe
