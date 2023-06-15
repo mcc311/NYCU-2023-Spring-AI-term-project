@@ -33,11 +33,12 @@ class mcts_player : public player {
   bool heuristic;
 
  public:
-  int sim_count;
-  mcts_player(int sim_count = 500, bool heuristic = false)
-      : sim_count(sim_count), heuristic(heuristic){};
+  int sim_count=0;
+  int time_limit=0;
+  mcts_player(int sim_count = 500, int time_limit=5)
+      : sim_count(sim_count), time_limit(time_limit){};
   virtual Board::Action generate(Board& b) {
-    return monte_carlo_tree_search(b, sim_count);
+    return monte_carlo_tree_search(b, sim_count, time_limit);
   }
 };
 
@@ -245,22 +246,24 @@ class hybrid_player : player {
     Board::Action negamax_result;
     std::thread negamaxThread([&]() {
       negamax_result = nega_generate(b);
-      negamax_done = true;
+      if(!mcts_done) negamax_done = true;
     });
 
     Board::Action mcts_result;
     std::thread mctsThread([&]() {
+      int sim_count = 2'000'000;
       Node* root = new Node(b);
       root->expand();
 
       while (std::chrono::steady_clock::now() - start <
                  std::chrono::seconds(time_limit) &&
-             !negamax_done) {
+             !negamax_done &&sim_count-- > 0) {
         Node* selected = root->select();
         selected->expand();
         Board::Reward score = selected->rollout();
         selected->backpropagate(score);
       }
+      std::cout << "Simulations: " << 2'000'000 - sim_count << std::endl;
 
       Board::Reward best_reward =
           -std::numeric_limits<Board::Reward>::infinity();
@@ -272,7 +275,7 @@ class hybrid_player : player {
         }
       }
       delete root;
-      mcts_done = true;
+      if(!negamax_done) mcts_done = true;
     });
 
     // Wait for either thread to finish

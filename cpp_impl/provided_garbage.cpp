@@ -158,15 +158,17 @@ void make_your_move(vector<vector<int>> Board_, int& row_or_col, int& subtract) 
   static auto player = hybrid_player(5);
   Board b = Board(Board_);
   auto action = player.generate(b);
-  b.apply(action);
-  std::cout << b << std::endl;
   row_or_col = action % 6;
   subtract = action/6 + 1;
 
 }
 
 void opponent_move(vector<vector<int>> Board_, int& row_or_col, int& subtract) {
-  cin >> row_or_col >> subtract;
+  static auto player = mcts_player(200000, 5);
+  Board b = Board(Board_);
+  auto action = player.generate(b);
+  row_or_col = action % 6;
+  subtract = action/6 + 1;
 }
 
 int main() {
@@ -204,12 +206,12 @@ int main() {
 
       cout << "Time: " << difftime(end, start) << " seconds" << endl << endl;
     } else {
-      // time_t start, end, diff;
-      // start = time(nullptr);
+      time_t start, end, diff;
+      start = time(nullptr);
       opponent_move(Board, row_or_col, subtract);
-      // end = time(nullptr);
+      end = time(nullptr);
 
-      // cout << "Time: " << difftime(end, start) << " seconds" << endl << endl;
+      cout << "Time: " << difftime(end, start) << " seconds" << endl << endl;
     }
 
     cout << "Player " << player << "'s move: ";

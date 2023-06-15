@@ -102,29 +102,31 @@ class Node {
   ~Node() { for (auto* child : children) delete child; }
 };
 
-Board::Action monte_carlo_tree_search(const Board& state, int sim_count) {
+Board::Action monte_carlo_tree_search(const Board& state, int sim_count, int time_limit) {
+  auto start = std::chrono::steady_clock::now();
   Node* root = new Node(state);
-  root->expand();
+      root->expand();
 
-  for (int i = 0; i < sim_count; i++) {
-    Node* selected = root->select();
-    selected->expand();
-    Board::Reward score = selected->rollout();
-    selected->backpropagate(score);
-  }
+      while (std::chrono::steady_clock::now() - start <
+                 std::chrono::seconds(time_limit) && sim_count-- > 0) {
+        Node* selected = root->select();
+        selected->expand();
+        Board::Reward score = selected->rollout();
+        selected->backpropagate(score);
+      }
+      std::cout << "Simulations: " << root->visits << std::endl;
 
-  // Select the best action based on the statistics of the root Node's children
-  Board::Reward best_reward = -std::numeric_limits<Board::Reward>::infinity();
-  Board::Action best_action = -1;
-
-  for (auto* child : root->children) {
-    Board::Reward avg_score = child->value();
-    if (avg_score > best_reward) {
-      best_reward = avg_score;
-      best_action = child->action;
-    }
-  }
-  delete root;
+      Board::Reward best_reward =
+          -std::numeric_limits<Board::Reward>::infinity();
+      Board::Action best_action = -1;
+      for (auto* child : root->children) {
+        Board::Reward avg_score = child->value();
+        if (avg_score > best_reward) {
+          best_reward = avg_score;
+          best_action = child->action;
+        }
+      }
+      delete root;
   return best_action;
 }
 
