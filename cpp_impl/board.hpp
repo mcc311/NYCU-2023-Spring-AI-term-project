@@ -4,7 +4,7 @@
 class Episode;
 class Board {
   friend class Episode;
-
+  friend std::istream& operator>>(std::istream& is, Board& b);
  private:
   uint64_t raw = 0;
 
@@ -225,6 +225,11 @@ class Board {
 std::ostream& operator<<(std::ostream& os, const Board& b) {
   for (int i = 0; i < 9; i++) {
     os << int(b.get(i)) << ((i + 1) % 3 ? "\t" : "\n");
-  }
+  } os << "\n";
   return os;
+}
+
+std::istream& operator>>(std::istream& is, Board& b) {
+    is >> b.raw;
+    return is;
 }

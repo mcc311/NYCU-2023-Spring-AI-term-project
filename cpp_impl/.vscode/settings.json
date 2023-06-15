@@ -84,6 +84,9 @@
         "stop_token": "cpp",
         "__availability": "cpp",
         "cinttypes": "cpp",
-        "coroutine": "cpp"
+        "coroutine": "cpp",
+        "stack": "cpp",
+        "__nullptr": "cpp",
+        "__string": "cpp"
     }
 }

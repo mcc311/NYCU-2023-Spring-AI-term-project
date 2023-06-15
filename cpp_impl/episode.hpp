@@ -2,17 +2,25 @@
 #include <numeric>
 #include <vector>
 #include <time.h>
+
+#include <sstream>
 #include <iostream>
 #include "agent.hpp"
 #include "board.hpp"
-
+class ReplayBuffer;
 class Episode {
+  friend class ReplayBuffer;
  public:
-  using Step = std::tuple<Board::Action, Board::Reward,
-                          Board>;  // At, R_t, St+1
+  typedef struct step{ // At, R_t, St+1
+    Board::Action action;
+    Board::Reward reward;
+    Board state;
+    step(Board::Action action=-1, Board::Reward reward=0, Board state={}):
+      action(action), reward(reward), state(state){};
+  } Step;
 
   Board init_state;
-  Episode(Board init_state): init_state(init_state){};
+  Episode(Board init_state=0): init_state(init_state){};
   std::vector<Step> history;
   float scores[2] = {};
   clock_t max_time[2] = {-std::numeric_limits<clock_t>::infinity(),
@@ -116,3 +124,65 @@ std::tuple<float, float> test_player0(player& p1, player& p2,
   return {float(first_win) / (num_to_play / 2),
           float(second_win) / (num_to_play / 2)};
 }
+
+std::ostream& operator<<(std::ostream& os, const Episode& ep) {
+  os << "Player 0: " << ep.scores[0] << " Player 1: " << ep.scores[1]
+     << " Time: " << ep.time << "sec\n";
+  os << ep.init_state;
+  for (auto&& [action, reward, state] : ep.history) {
+    os << action << " " << reward << "\n" << state << " ";
+  } os << std::endl;
+  return os;
+}
+
+class ReplayBuffer {
+ public:
+
+  std::vector<Episode> buffer;
+  size_t capacity;
+  ReplayBuffer(size_t capacity) : capacity(capacity){
+    buffer.reserve(capacity);
+  };
+  void push(const Episode& s) {
+    if (buffer.size() >= capacity) {
+      buffer.erase(buffer.begin());
+    }
+    buffer.push_back(s);
+  }
+  Episode sample() {
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    std::uniform_int_distribution<size_t> dist(0, buffer.size() - 1);
+    return buffer[dist(gen)];
+  }
+  size_t size() { return buffer.size(); }
+
+  
+  void load(const std::string& filename) {
+    std::ifstream in(filename);
+    std::string line;
+    while (std::getline(in, line)) {
+      std::stringstream ss(line);
+      Episode ep;
+      int id;
+      ss >> id;
+      ss >> ep.scores[0] >> ep.scores[1] >> ep.time;
+      ss >> ep.init_state;
+      while (true) {
+        int action, reward;
+        Board state;
+        Episode::Step step;
+        ss >> action >> reward >> state;
+        step.action = action;
+        step.reward = reward;
+        step.state = state;
+        if (ss.eof()) break;
+        ep.history.push_back(step);
+        
+      }
+      push(ep);
+    }
+    in.close();
+  };
+
+};

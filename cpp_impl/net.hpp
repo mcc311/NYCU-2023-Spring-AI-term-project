@@ -12,21 +12,28 @@
 #include "board.hpp"
 #include "utils.hpp"
 
-class net {
+class Net {
  public:
-  net() = default;
-  net(const std::string& load_path);
-  virtual void load(const std::string& load_path);
-  virtual void save(const std::string& save_path);
-  virtual void update(const Board& b, const float error, const float alpha);
-  virtual float evaluate(const Board& b) const;
+  Net() = default;
+  virtual void load(const std::string& load_path){};
+  virtual void save(const std::string& save_path){};
+  virtual void update(const Board& b, const float error, const float alpha){};
+  virtual float evaluate(const Board& b) const {};
 };
 
 template <int FEAT_SIZE, int FEAT_NUM>
-class n_tuple : public net {
+class NTuple : public Net {
+  private:
+  static constexpr int NUM_RANGE = 100;
  public:
-  n_tuple(int isom_num = 8) : isom_num(isom_num){};
-  n_tuple(const std::string& load_path, int isom_num = 8);
+  NTuple(int isom_num = 8) : isom_num(isom_num){};
+  NTuple(const std::string& load_path, int isom_num = 8);
+  void init(){
+    values.fill(new Board::Reward[FEAT_SIZE]);
+  }
+  ~NTuple() {
+    for (auto& v : values) delete[] v;
+  };
   void load(const std::string& load_path) override;
   void save(const std::string& save_path) override;
   float evaluate(const Board& b) const override;
@@ -36,24 +43,21 @@ class n_tuple : public net {
       for (int isom = 0; isom < isom_num; isom++) {
         uint32_t feat = 0;
         for (const auto& f : feat_idx[i]) {
-          feat = feat * 100;
+          feat = feat * NUM_RANGE;
           feat += b.get(f, isom);
         }
         co_yield std::make_pair(i, feat);
       }
     }
   }
-  void set_feats(const std::array<std::array<int, FEAT_SIZE>, FEAT_NUM>&
-                       feat_idx_) {
+  void set_feats(
+      const std::array<std::array<int, FEAT_SIZE>, FEAT_NUM>& feat_idx_) {
     feat_idx = feat_idx_;
   }
 
  private:
   // n tuple value array
-  std::array<std::array<float, std::integral_constant<
-                                   int, int(std::pow(100, FEAT_SIZE))>::value>,
-             FEAT_NUM>
-      values;
+  std::array<Board::Reward*, FEAT_NUM> values;
   // feature index array
   std::array<std::array<int, FEAT_SIZE>, FEAT_NUM> feat_idx;
 
@@ -61,14 +65,14 @@ class n_tuple : public net {
 };
 
 template <int FEAT_SIZE, int FEAT_NUM>
-n_tuple<FEAT_SIZE, FEAT_NUM>::n_tuple(const std::string& load_path,
+NTuple<FEAT_SIZE, FEAT_NUM>::NTuple(const std::string& load_path,
                                       int isom_num)
     : isom_num(isom_num) {
   load(load_path);
 };
 
 template <int FEAT_SIZE, int FEAT_NUM>
-void n_tuple<FEAT_SIZE, FEAT_NUM>::save(const std::string& save_path) {
+void NTuple<FEAT_SIZE, FEAT_NUM>::save(const std::string& save_path) {
   std::ofstream ofs(save_path);
   if (!ofs.is_open()) {
     std::cout << "Cannot open file " << save_path << std::endl;
@@ -86,7 +90,7 @@ void n_tuple<FEAT_SIZE, FEAT_NUM>::save(const std::string& save_path) {
 };
 
 template <int FEAT_SIZE, int FEAT_NUM>
-void n_tuple<FEAT_SIZE, FEAT_NUM>::load(const std::string& load_path) {
+void NTuple<FEAT_SIZE, FEAT_NUM>::load(const std::string& load_path) {
   std::ifstream ifs(load_path);
   if (!ifs.is_open()) {
     std::cout << "Cannot open file " << load_path << std::endl;
@@ -103,13 +107,13 @@ void n_tuple<FEAT_SIZE, FEAT_NUM>::load(const std::string& load_path) {
 
 // evaluate the board
 template <int FEAT_SIZE, int FEAT_NUM>
-float n_tuple<FEAT_SIZE, FEAT_NUM>::evaluate(const Board& b) const {
+float NTuple<FEAT_SIZE, FEAT_NUM>::evaluate(const Board& b) const {
   float value = 0;
   for (int i = 0; i < FEAT_NUM; i++) {
     for (int isom = 0; isom < isom_num; isom++) {
       uint32_t feat = 0;
       for (const auto& f : feat_idx[i]) {
-        feat = feat * 100;
+        feat = feat * NUM_RANGE;
         feat += b.get(f, isom);
       }
       value += values[i][feat];
@@ -120,11 +124,9 @@ float n_tuple<FEAT_SIZE, FEAT_NUM>::evaluate(const Board& b) const {
 
 // update the n tuple
 template <int FEAT_SIZE, int FEAT_NUM>
-void n_tuple<FEAT_SIZE, FEAT_NUM>::update(const Board& b, const float error,
+void NTuple<FEAT_SIZE, FEAT_NUM>::update(const Board& b, const float error,
                                           const float alpha) {
   for (const auto& [i, feat] : get_feats(b)) {
     values[i][feat] += alpha * error;
   }
 };
-
-
