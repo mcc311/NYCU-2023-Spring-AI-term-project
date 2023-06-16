@@ -164,7 +164,7 @@ void make_your_move(vector<vector<int>> Board_, int& row_or_col, int& subtract) 
 }
 
 void opponent_move(vector<vector<int>> Board_, int& row_or_col, int& subtract) {
-  static auto player = mcts_player(200000, 5);
+  static auto player = mcts_player(3000000, 57);
   Board b = Board(Board_);
   auto action = player.generate(b);
   row_or_col = action % 6;

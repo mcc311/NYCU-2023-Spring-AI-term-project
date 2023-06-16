@@ -88,6 +88,7 @@ class nega_player : public player {
   };
 
   virtual Board::Action generate(Board& b) override {
+    transposition_table.clear();
     int best_action = -1;
     Board::Reward best_value = -std::numeric_limits<Board::Reward>::infinity();
     for (auto& action : b.shuffle_legal_move()) {
@@ -162,6 +163,7 @@ class pvs_player : public nega_player {
 
   virtual Board::Action generate(Board& b) override {
     int best_action = -1;
+    transposition_table.clear();
     Board::Reward best_value = -std::numeric_limits<Board::Reward>::infinity();
     for (auto& action : b.shuffle_legal_move()) {
       auto b_ = b;
@@ -182,11 +184,15 @@ class pvs_player : public nega_player {
 
 class hybrid_player : player {
  public:
+  hybrid_player(int time_limit = 57) : time_limit(time_limit){};
   int time_limit;
   bool mcts_done = false;
   bool negamax_done = false;
   std::unordered_map<Board::Hash, Board::Reward> transposition_table;
+
+
   Board::Action nega_generate(Board& b) {
+    transposition_table.clear();
     int best_action = -1;
     Board::Reward best_value = -std::numeric_limits<Board::Reward>::infinity();
     for (auto& action : b.shuffle_legal_move()) {
@@ -236,10 +242,12 @@ class hybrid_player : player {
     return best_value;
   };
 
-  hybrid_player(int time_limit = 57) : time_limit(time_limit){};
+
+  
   virtual Board::Action generate(Board& b) override {
     std::chrono::steady_clock::time_point start =
         std::chrono::steady_clock::now();
+    int sim_count = 0;
     negamax_done = false;
     mcts_done = false;
 
@@ -251,19 +259,19 @@ class hybrid_player : player {
 
     Board::Action mcts_result;
     std::thread mctsThread([&]() {
-      int sim_count = 2'000'000;
       Node* root = new Node(b);
       root->expand();
 
       while (std::chrono::steady_clock::now() - start <
                  std::chrono::seconds(time_limit) &&
-             !negamax_done &&sim_count-- > 0) {
+             !negamax_done) {
+        sim_count++;
         Node* selected = root->select();
         selected->expand();
         Board::Reward score = selected->rollout();
         selected->backpropagate(score);
       }
-      std::cout << "Simulations: " << 2'000'000 - sim_count << std::endl;
+      std::cout << "Simulations: " <<  sim_count << std::endl;
 
       Board::Reward best_reward =
           -std::numeric_limits<Board::Reward>::infinity();

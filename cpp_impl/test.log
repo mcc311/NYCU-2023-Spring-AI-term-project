@@ -1,91 +1,2349 @@
 Board initialization...
 
 Current Board:
-59 81 56 
-63 52 64 
-88 71 66 
+91 56 52 
+54 59 79 
+71 57 77 
 
 Player 0's turn:
-194
-195
-196
-200
-201
-202
-197
-227
-228
-229
-203
-204
-205
-206
-208
-Start Expanding ...
-215
-216
-218
-219
-220
-221
-222
-223
-224
-219
-220
-224
-219
-220
-221
-222
-223
-224
-219
-220
-221
-222
-223
-224
-219
-220
-224
-219
-220
-224
-219
-220
-224
-219
-220
-224
-219
-220
-224
-219
-220
-224
-219
-220
-224
-219
-220
-224
-219
-220
-224
-219
-220
-224
-219
-220
-224
-219
-220
-224
-219
-220
-224
-219
-220
-224
-226
+Simulations: 109330
+Time: 6 seconds
+
+Player 0's move: row_or_col: 4 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 1
+Player 1 total cost: 0
+--------------------------------------
+Current Board:
+91 55 52 
+54 58 79 
+71 56 77 
+
+Player 1's turn:
+Simulations: 1710708
+Time: 62 seconds
+
+Player 1's move: row_or_col: 0 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 1
+Player 1 total cost: 1
+--------------------------------------
+Current Board:
+90 54 51 
+54 58 79 
+71 56 77 
+
+Player 0's turn:
+Simulations: 121996
+Time: 6 seconds
+
+Player 0's move: row_or_col: 4 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 2
+Player 1 total cost: 1
+--------------------------------------
+Current Board:
+90 53 51 
+54 57 79 
+71 55 77 
+
+Player 1's turn:
+Simulations: 1548422
+Time: 62 seconds
+
+Player 1's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 2
+Player 1 total cost: 2
+--------------------------------------
+Current Board:
+90 53 51 
+53 56 78 
+71 55 77 
+
+Player 0's turn:
+Simulations: 102777
+Time: 6 seconds
+
+Player 0's move: row_or_col: 5 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 3
+Player 1 total cost: 2
+--------------------------------------
+Current Board:
+90 53 50 
+53 56 77 
+71 55 76 
+
+Player 1's turn:
+Simulations: 1542980
+Time: 62 seconds
+
+Player 1's move: row_or_col: 3 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 3
+Player 1 total cost: 3
+--------------------------------------
+Current Board:
+89 53 50 
+52 56 77 
+70 55 76 
+
+Player 0's turn:
+Simulations: 117580
+Time: 6 seconds
+
+Player 0's move: row_or_col: 0 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 4
+Player 1 total cost: 3
+--------------------------------------
+Current Board:
+88 52 49 
+52 56 77 
+70 55 76 
+
+Player 1's turn:
+Simulations: 1629878
+Time: 62 seconds
+
+Player 1's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 4
+Player 1 total cost: 4
+--------------------------------------
+Current Board:
+88 52 49 
+51 55 76 
+70 55 76 
+
+Player 0's turn:
+Simulations: 114110
+Time: 6 seconds
+
+Player 0's move: row_or_col: 3 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 5
+Player 1 total cost: 4
+--------------------------------------
+Current Board:
+87 52 49 
+50 55 76 
+69 55 76 
+
+Player 1's turn:
+Simulations: 1653616
+Time: 63 seconds
+
+Player 1's move: row_or_col: 3 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 5
+Player 1 total cost: 5
+--------------------------------------
+Current Board:
+86 52 49 
+49 55 76 
+68 55 76 
+
+Player 0's turn:
+Simulations: 129647
+Time: 5 seconds
+
+Player 0's move: row_or_col: 5 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 6
+Player 1 total cost: 5
+--------------------------------------
+Current Board:
+86 52 48 
+49 55 75 
+68 55 75 
+
+Player 1's turn:
+Simulations: 1630008
+Time: 63 seconds
+
+Player 1's move: row_or_col: 2 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 6
+Player 1 total cost: 6
+--------------------------------------
+Current Board:
+86 52 48 
+49 55 75 
+67 54 74 
+
+Player 0's turn:
+Simulations: 100959
+Time: 6 seconds
+
+Player 0's move: row_or_col: 4 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 7
+Player 1 total cost: 6
+--------------------------------------
+Current Board:
+86 51 48 
+49 54 75 
+67 53 74 
+
+Player 1's turn:
+Simulations: 1682528
+Time: 63 seconds
+
+Player 1's move: row_or_col: 4 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 7
+Player 1 total cost: 7
+--------------------------------------
+Current Board:
+86 50 48 
+49 53 75 
+67 52 74 
+
+Player 0's turn:
+Simulations: 116477
+Time: 5 seconds
+
+Player 0's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 8
+Player 1 total cost: 7
+--------------------------------------
+Current Board:
+86 50 48 
+48 52 74 
+67 52 74 
+
+Player 1's turn:
+Simulations: 1770861
+Time: 63 seconds
+
+Player 1's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 8
+Player 1 total cost: 8
+--------------------------------------
+Current Board:
+86 50 48 
+47 51 73 
+67 52 74 
+
+Player 0's turn:
+Simulations: 124638
+Time: 5 seconds
+
+Player 0's move: row_or_col: 0 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 9
+Player 1 total cost: 8
+--------------------------------------
+Current Board:
+85 49 47 
+47 51 73 
+67 52 74 
+
+Player 1's turn:
+Simulations: 1692689
+Time: 62 seconds
+
+Player 1's move: row_or_col: 2 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 9
+Player 1 total cost: 9
+--------------------------------------
+Current Board:
+85 49 47 
+47 51 73 
+66 51 73 
+
+Player 0's turn:
+Simulations: 138266
+Time: 6 seconds
+
+Player 0's move: row_or_col: 2 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 10
+Player 1 total cost: 9
+--------------------------------------
+Current Board:
+85 49 47 
+47 51 73 
+65 50 72 
+
+Player 1's turn:
+Simulations: 1506165
+Time: 69 seconds
+
+Player 1's move: row_or_col: 4 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 10
+Player 1 total cost: 10
+--------------------------------------
+Current Board:
+85 48 47 
+47 50 73 
+65 49 72 
+
+Player 0's turn:
+Simulations: 113011
+Time: 5 seconds
+
+Player 0's move: row_or_col: 0 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 11
+Player 1 total cost: 10
+--------------------------------------
+Current Board:
+84 47 46 
+47 50 73 
+65 49 72 
+
+Player 1's turn:
+Simulations: 2787777
+Time: 60 seconds
+
+Player 1's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 11
+Player 1 total cost: 11
+--------------------------------------
+Current Board:
+84 47 46 
+46 49 72 
+65 49 72 
+
+Player 0's turn:
+Simulations: 251331
+Time: 6 seconds
+
+Player 0's move: row_or_col: 3 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 12
+Player 1 total cost: 11
+--------------------------------------
+Current Board:
+83 47 46 
+45 49 72 
+64 49 72 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 59 seconds
+
+Player 1's move: row_or_col: 2 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 12
+Player 1 total cost: 12
+--------------------------------------
+Current Board:
+83 47 46 
+45 49 72 
+63 48 71 
+
+Player 0's turn:
+Simulations: 253849
+Time: 6 seconds
+
+Player 0's move: row_or_col: 2 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 13
+Player 1 total cost: 12
+--------------------------------------
+Current Board:
+83 47 46 
+45 49 72 
+62 47 70 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 58 seconds
+
+Player 1's move: row_or_col: 2 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 13
+Player 1 total cost: 13
+--------------------------------------
+Current Board:
+83 47 46 
+45 49 72 
+61 46 69 
+
+Player 0's turn:
+Simulations: 272645
+Time: 6 seconds
+
+Player 0's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 14
+Player 1 total cost: 13
+--------------------------------------
+Current Board:
+83 47 46 
+44 48 71 
+61 46 69 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 56 seconds
+
+Player 1's move: row_or_col: 2 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 14
+Player 1 total cost: 14
+--------------------------------------
+Current Board:
+83 47 46 
+44 48 71 
+60 45 68 
+
+Player 0's turn:
+Simulations: 276205
+Time: 5 seconds
+
+Player 0's move: row_or_col: 5 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 15
+Player 1 total cost: 14
+--------------------------------------
+Current Board:
+83 47 45 
+44 48 70 
+60 45 67 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 56 seconds
+
+Player 1's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 15
+Player 1 total cost: 15
+--------------------------------------
+Current Board:
+83 47 45 
+43 47 69 
+60 45 67 
+
+Player 0's turn:
+Simulations: 281685
+Time: 5 seconds
+
+Player 0's move: row_or_col: 3 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 16
+Player 1 total cost: 15
+--------------------------------------
+Current Board:
+82 47 45 
+42 47 69 
+59 45 67 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 56 seconds
+
+Player 1's move: row_or_col: 4 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 16
+Player 1 total cost: 16
+--------------------------------------
+Current Board:
+82 46 45 
+42 46 69 
+59 44 67 
+
+Player 0's turn:
+Simulations: 279274
+Time: 5 seconds
+
+Player 0's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 17
+Player 1 total cost: 16
+--------------------------------------
+Current Board:
+82 46 45 
+41 45 68 
+59 44 67 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 55 seconds
+
+Player 1's move: row_or_col: 2 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 17
+Player 1 total cost: 17
+--------------------------------------
+Current Board:
+82 46 45 
+41 45 68 
+58 43 66 
+
+Player 0's turn:
+Simulations: 288206
+Time: 5 seconds
+
+Player 0's move: row_or_col: 3 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 18
+Player 1 total cost: 17
+--------------------------------------
+Current Board:
+81 46 45 
+40 45 68 
+57 43 66 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 55 seconds
+
+Player 1's move: row_or_col: 2 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 18
+Player 1 total cost: 18
+--------------------------------------
+Current Board:
+81 46 45 
+40 45 68 
+56 42 65 
+
+Player 0's turn:
+Simulations: 292442
+Time: 5 seconds
+
+Player 0's move: row_or_col: 4 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 19
+Player 1 total cost: 18
+--------------------------------------
+Current Board:
+81 45 45 
+40 44 68 
+56 41 65 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 53 seconds
+
+Player 1's move: row_or_col: 5 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 19
+Player 1 total cost: 19
+--------------------------------------
+Current Board:
+81 45 44 
+40 44 67 
+56 41 64 
+
+Player 0's turn:
+Simulations: 296563
+Time: 5 seconds
+
+Player 0's move: row_or_col: 4 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 20
+Player 1 total cost: 19
+--------------------------------------
+Current Board:
+81 44 44 
+40 43 67 
+56 40 64 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 54 seconds
+
+Player 1's move: row_or_col: 2 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 20
+Player 1 total cost: 20
+--------------------------------------
+Current Board:
+81 44 44 
+40 43 67 
+55 39 63 
+
+Player 0's turn:
+Simulations: 300205
+Time: 6 seconds
+
+Player 0's move: row_or_col: 4 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 21
+Player 1 total cost: 20
+--------------------------------------
+Current Board:
+81 43 44 
+40 42 67 
+55 38 63 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 52 seconds
+
+Player 1's move: row_or_col: 0 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 21
+Player 1 total cost: 21
+--------------------------------------
+Current Board:
+80 42 43 
+40 42 67 
+55 38 63 
+
+Player 0's turn:
+Simulations: 304522
+Time: 5 seconds
+
+Player 0's move: row_or_col: 5 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 22
+Player 1 total cost: 21
+--------------------------------------
+Current Board:
+80 42 42 
+40 42 66 
+55 38 62 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 51 seconds
+
+Player 1's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 22
+Player 1 total cost: 22
+--------------------------------------
+Current Board:
+80 42 42 
+39 41 65 
+55 38 62 
+
+Player 0's turn:
+Simulations: 309864
+Time: 6 seconds
+
+Player 0's move: row_or_col: 0 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 23
+Player 1 total cost: 22
+--------------------------------------
+Current Board:
+79 41 41 
+39 41 65 
+55 38 62 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 51 seconds
+
+Player 1's move: row_or_col: 4 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 23
+Player 1 total cost: 23
+--------------------------------------
+Current Board:
+79 40 41 
+39 40 65 
+55 37 62 
+
+Player 0's turn:
+Simulations: 291477
+Time: 6 seconds
+
+Player 0's move: row_or_col: 0 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 24
+Player 1 total cost: 23
+--------------------------------------
+Current Board:
+78 39 40 
+39 40 65 
+55 37 62 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 50 seconds
+
+Player 1's move: row_or_col: 3 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 24
+Player 1 total cost: 24
+--------------------------------------
+Current Board:
+77 39 40 
+38 40 65 
+54 37 62 
+
+Player 0's turn:
+Simulations: 316373
+Time: 5 seconds
+
+Player 0's move: row_or_col: 2 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 25
+Player 1 total cost: 24
+--------------------------------------
+Current Board:
+77 39 40 
+38 40 65 
+53 36 61 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 50 seconds
+
+Player 1's move: row_or_col: 0 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 25
+Player 1 total cost: 25
+--------------------------------------
+Current Board:
+76 38 39 
+38 40 65 
+53 36 61 
+
+Player 0's turn:
+Simulations: 31775
+Time: 1 seconds
+
+Player 0's move: row_or_col: 2 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 26
+Player 1 total cost: 25
+--------------------------------------
+Current Board:
+76 38 39 
+38 40 65 
+52 35 60 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 49 seconds
+
+Player 1's move: row_or_col: 2 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 26
+Player 1 total cost: 26
+--------------------------------------
+Current Board:
+76 38 39 
+38 40 65 
+51 34 59 
+
+Player 0's turn:
+Simulations: 3
+Time: 0 seconds
+
+Player 0's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 27
+Player 1 total cost: 26
+--------------------------------------
+Current Board:
+76 38 39 
+37 39 64 
+51 34 59 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 48 seconds
+
+Player 1's move: row_or_col: 0 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 27
+Player 1 total cost: 27
+--------------------------------------
+Current Board:
+75 37 38 
+37 39 64 
+51 34 59 
+
+Player 0's turn:
+Simulations: 5
+Time: 0 seconds
+
+Player 0's move: row_or_col: 3 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 28
+Player 1 total cost: 27
+--------------------------------------
+Current Board:
+74 37 38 
+36 39 64 
+50 34 59 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 48 seconds
+
+Player 1's move: row_or_col: 4 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 28
+Player 1 total cost: 28
+--------------------------------------
+Current Board:
+74 36 38 
+36 38 64 
+50 33 59 
+
+Player 0's turn:
+Simulations: 7
+Time: 0 seconds
+
+Player 0's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 29
+Player 1 total cost: 28
+--------------------------------------
+Current Board:
+74 36 38 
+35 37 63 
+50 33 59 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 47 seconds
+
+Player 1's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 29
+Player 1 total cost: 29
+--------------------------------------
+Current Board:
+74 36 38 
+34 36 62 
+50 33 59 
+
+Player 0's turn:
+Simulations: 6
+Time: 0 seconds
+
+Player 0's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 30
+Player 1 total cost: 29
+--------------------------------------
+Current Board:
+74 36 38 
+33 35 61 
+50 33 59 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 47 seconds
+
+Player 1's move: row_or_col: 3 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 30
+Player 1 total cost: 30
+--------------------------------------
+Current Board:
+73 36 38 
+32 35 61 
+49 33 59 
+
+Player 0's turn:
+Simulations: 7
+Time: 0 seconds
+
+Player 0's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 31
+Player 1 total cost: 30
+--------------------------------------
+Current Board:
+73 36 38 
+31 34 60 
+49 33 59 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 47 seconds
+
+Player 1's move: row_or_col: 4 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 31
+Player 1 total cost: 31
+--------------------------------------
+Current Board:
+73 35 38 
+31 33 60 
+49 32 59 
+
+Player 0's turn:
+Simulations: 7
+Time: 0 seconds
+
+Player 0's move: row_or_col: 3 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 32
+Player 1 total cost: 31
+--------------------------------------
+Current Board:
+72 35 38 
+30 33 60 
+48 32 59 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 47 seconds
+
+Player 1's move: row_or_col: 0 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 32
+Player 1 total cost: 32
+--------------------------------------
+Current Board:
+71 34 37 
+30 33 60 
+48 32 59 
+
+Player 0's turn:
+Simulations: 7
+Time: 0 seconds
+
+Player 0's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 33
+Player 1 total cost: 32
+--------------------------------------
+Current Board:
+71 34 37 
+29 32 59 
+48 32 59 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 47 seconds
+
+Player 1's move: row_or_col: 2 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 33
+Player 1 total cost: 33
+--------------------------------------
+Current Board:
+71 34 37 
+29 32 59 
+47 31 58 
+
+Player 0's turn:
+Simulations: 6
+Time: 0 seconds
+
+Player 0's move: row_or_col: 2 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 34
+Player 1 total cost: 33
+--------------------------------------
+Current Board:
+71 34 37 
+29 32 59 
+46 30 57 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 46 seconds
+
+Player 1's move: row_or_col: 3 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 34
+Player 1 total cost: 34
+--------------------------------------
+Current Board:
+70 34 37 
+28 32 59 
+45 30 57 
+
+Player 0's turn:
+Simulations: 7
+Time: 0 seconds
+
+Player 0's move: row_or_col: 3 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 35
+Player 1 total cost: 34
+--------------------------------------
+Current Board:
+69 34 37 
+27 32 59 
+44 30 57 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 44 seconds
+
+Player 1's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 35
+Player 1 total cost: 35
+--------------------------------------
+Current Board:
+69 34 37 
+26 31 58 
+44 30 57 
+
+Player 0's turn:
+Simulations: 9
+Time: 0 seconds
+
+Player 0's move: row_or_col: 2 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 36
+Player 1 total cost: 35
+--------------------------------------
+Current Board:
+69 34 37 
+26 31 58 
+43 29 56 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 45 seconds
+
+Player 1's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 36
+Player 1 total cost: 36
+--------------------------------------
+Current Board:
+69 34 37 
+25 30 57 
+43 29 56 
+
+Player 0's turn:
+Simulations: 8
+Time: 0 seconds
+
+Player 0's move: row_or_col: 3 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 37
+Player 1 total cost: 36
+--------------------------------------
+Current Board:
+68 34 37 
+24 30 57 
+42 29 56 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 43 seconds
+
+Player 1's move: row_or_col: 5 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 37
+Player 1 total cost: 37
+--------------------------------------
+Current Board:
+68 34 36 
+24 30 56 
+42 29 55 
+
+Player 0's turn:
+Simulations: 8
+Time: 0 seconds
+
+Player 0's move: row_or_col: 0 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 38
+Player 1 total cost: 37
+--------------------------------------
+Current Board:
+67 33 35 
+24 30 56 
+42 29 55 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 43 seconds
+
+Player 1's move: row_or_col: 2 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 38
+Player 1 total cost: 38
+--------------------------------------
+Current Board:
+67 33 35 
+24 30 56 
+41 28 54 
+
+Player 0's turn:
+Simulations: 7
+Time: 0 seconds
+
+Player 0's move: row_or_col: 5 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 39
+Player 1 total cost: 38
+--------------------------------------
+Current Board:
+67 33 34 
+24 30 55 
+41 28 53 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 41 seconds
+
+Player 1's move: row_or_col: 3 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 39
+Player 1 total cost: 39
+--------------------------------------
+Current Board:
+66 33 34 
+23 30 55 
+40 28 53 
+
+Player 0's turn:
+Simulations: 8
+Time: 0 seconds
+
+Player 0's move: row_or_col: 3 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 40
+Player 1 total cost: 39
+--------------------------------------
+Current Board:
+65 33 34 
+22 30 55 
+39 28 53 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 42 seconds
+
+Player 1's move: row_or_col: 0 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 40
+Player 1 total cost: 40
+--------------------------------------
+Current Board:
+64 32 33 
+22 30 55 
+39 28 53 
+
+Player 0's turn:
+Simulations: 7
+Time: 0 seconds
+
+Player 0's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 41
+Player 1 total cost: 40
+--------------------------------------
+Current Board:
+64 32 33 
+21 29 54 
+39 28 53 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 41 seconds
+
+Player 1's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 41
+Player 1 total cost: 41
+--------------------------------------
+Current Board:
+64 32 33 
+20 28 53 
+39 28 53 
+
+Player 0's turn:
+Simulations: 10
+Time: 0 seconds
+
+Player 0's move: row_or_col: 0 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 42
+Player 1 total cost: 41
+--------------------------------------
+Current Board:
+63 31 32 
+20 28 53 
+39 28 53 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 40 seconds
+
+Player 1's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 42
+Player 1 total cost: 42
+--------------------------------------
+Current Board:
+63 31 32 
+19 27 52 
+39 28 53 
+
+Player 0's turn:
+Simulations: 9
+Time: 0 seconds
+
+Player 0's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 43
+Player 1 total cost: 42
+--------------------------------------
+Current Board:
+63 31 32 
+18 26 51 
+39 28 53 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 40 seconds
+
+Player 1's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 43
+Player 1 total cost: 43
+--------------------------------------
+Current Board:
+63 31 32 
+17 25 50 
+39 28 53 
+
+Player 0's turn:
+Simulations: 8
+Time: 0 seconds
+
+Player 0's move: row_or_col: 0 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 44
+Player 1 total cost: 43
+--------------------------------------
+Current Board:
+62 30 31 
+17 25 50 
+39 28 53 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 40 seconds
+
+Player 1's move: row_or_col: 3 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 44
+Player 1 total cost: 44
+--------------------------------------
+Current Board:
+61 30 31 
+16 25 50 
+38 28 53 
+
+Player 0's turn:
+Simulations: 8
+Time: 0 seconds
+
+Player 0's move: row_or_col: 3 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 45
+Player 1 total cost: 44
+--------------------------------------
+Current Board:
+60 30 31 
+15 25 50 
+37 28 53 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 40 seconds
+
+Player 1's move: row_or_col: 5 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 45
+Player 1 total cost: 45
+--------------------------------------
+Current Board:
+60 30 30 
+15 25 49 
+37 28 52 
+
+Player 0's turn:
+Simulations: 8
+Time: 0 seconds
+
+Player 0's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 46
+Player 1 total cost: 45
+--------------------------------------
+Current Board:
+60 30 30 
+14 24 48 
+37 28 52 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 40 seconds
+
+Player 1's move: row_or_col: 5 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 46
+Player 1 total cost: 46
+--------------------------------------
+Current Board:
+60 30 29 
+14 24 47 
+37 28 51 
+
+Player 0's turn:
+Simulations: 11
+Time: 0 seconds
+
+Player 0's move: row_or_col: 0 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 47
+Player 1 total cost: 46
+--------------------------------------
+Current Board:
+59 29 28 
+14 24 47 
+37 28 51 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 38 seconds
+
+Player 1's move: row_or_col: 2 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 47
+Player 1 total cost: 47
+--------------------------------------
+Current Board:
+59 29 28 
+14 24 47 
+36 27 50 
+
+Player 0's turn:
+Simulations: 8
+Time: 0 seconds
+
+Player 0's move: row_or_col: 4 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 48
+Player 1 total cost: 47
+--------------------------------------
+Current Board:
+59 28 28 
+14 23 47 
+36 26 50 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 38 seconds
+
+Player 1's move: row_or_col: 4 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 48
+Player 1 total cost: 48
+--------------------------------------
+Current Board:
+59 27 28 
+14 22 47 
+36 25 50 
+
+Player 0's turn:
+Simulations: 12
+Time: 0 seconds
+
+Player 0's move: row_or_col: 3 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 49
+Player 1 total cost: 48
+--------------------------------------
+Current Board:
+58 27 28 
+13 22 47 
+35 25 50 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 37 seconds
+
+Player 1's move: row_or_col: 2 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 49
+Player 1 total cost: 49
+--------------------------------------
+Current Board:
+58 27 28 
+13 22 47 
+34 24 49 
+
+Player 0's turn:
+Simulations: 12
+Time: 0 seconds
+
+Player 0's move: row_or_col: 3 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 50
+Player 1 total cost: 49
+--------------------------------------
+Current Board:
+57 27 28 
+12 22 47 
+33 24 49 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 36 seconds
+
+Player 1's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 50
+Player 1 total cost: 50
+--------------------------------------
+Current Board:
+57 27 28 
+11 21 46 
+33 24 49 
+
+Player 0's turn:
+Simulations: 10
+Time: 0 seconds
+
+Player 0's move: row_or_col: 3 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 51
+Player 1 total cost: 50
+--------------------------------------
+Current Board:
+56 27 28 
+10 21 46 
+32 24 49 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 37 seconds
+
+Player 1's move: row_or_col: 3 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 51
+Player 1 total cost: 51
+--------------------------------------
+Current Board:
+55 27 28 
+9 21 46 
+31 24 49 
+
+Player 0's turn:
+Simulations: 11
+Time: 0 seconds
+
+Player 0's move: row_or_col: 2 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 52
+Player 1 total cost: 51
+--------------------------------------
+Current Board:
+55 27 28 
+9 21 46 
+30 23 48 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 36 seconds
+
+Player 1's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 52
+Player 1 total cost: 52
+--------------------------------------
+Current Board:
+55 27 28 
+8 20 45 
+30 23 48 
+
+Player 0's turn:
+Simulations: 12
+Time: 0 seconds
+
+Player 0's move: row_or_col: 5 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 53
+Player 1 total cost: 52
+--------------------------------------
+Current Board:
+55 27 27 
+8 20 44 
+30 23 47 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 36 seconds
+
+Player 1's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 53
+Player 1 total cost: 53
+--------------------------------------
+Current Board:
+55 27 27 
+7 19 43 
+30 23 47 
+
+Player 0's turn:
+Simulations: 8
+Time: 0 seconds
+
+Player 0's move: row_or_col: 0 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 54
+Player 1 total cost: 53
+--------------------------------------
+Current Board:
+54 26 26 
+7 19 43 
+30 23 47 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 36 seconds
+
+Player 1's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 54
+Player 1 total cost: 54
+--------------------------------------
+Current Board:
+54 26 26 
+6 18 42 
+30 23 47 
+
+Player 0's turn:
+Simulations: 11
+Time: 0 seconds
+
+Player 0's move: row_or_col: 5 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 55
+Player 1 total cost: 54
+--------------------------------------
+Current Board:
+54 26 25 
+6 18 41 
+30 23 46 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 35 seconds
+
+Player 1's move: row_or_col: 0 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 55
+Player 1 total cost: 55
+--------------------------------------
+Current Board:
+53 25 24 
+6 18 41 
+30 23 46 
+
+Player 0's turn:
+Simulations: 10
+Time: 0 seconds
+
+Player 0's move: row_or_col: 5 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 56
+Player 1 total cost: 55
+--------------------------------------
+Current Board:
+53 25 23 
+6 18 40 
+30 23 45 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 34 seconds
+
+Player 1's move: row_or_col: 0 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 56
+Player 1 total cost: 56
+--------------------------------------
+Current Board:
+52 24 22 
+6 18 40 
+30 23 45 
+
+Player 0's turn:
+Simulations: 13
+Time: 0 seconds
+
+Player 0's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 57
+Player 1 total cost: 56
+--------------------------------------
+Current Board:
+52 24 22 
+5 17 39 
+30 23 45 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 33 seconds
+
+Player 1's move: row_or_col: 4 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 57
+Player 1 total cost: 57
+--------------------------------------
+Current Board:
+52 23 22 
+5 16 39 
+30 22 45 
+
+Player 0's turn:
+Simulations: 14
+Time: 0 seconds
+
+Player 0's move: row_or_col: 5 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 58
+Player 1 total cost: 57
+--------------------------------------
+Current Board:
+52 23 21 
+5 16 38 
+30 22 44 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 31 seconds
+
+Player 1's move: row_or_col: 4 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 58
+Player 1 total cost: 58
+--------------------------------------
+Current Board:
+52 22 21 
+5 15 38 
+30 21 44 
+
+Player 0's turn:
+Simulations: 11
+Time: 0 seconds
+
+Player 0's move: row_or_col: 3 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 59
+Player 1 total cost: 58
+--------------------------------------
+Current Board:
+51 22 21 
+4 15 38 
+29 21 44 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 32 seconds
+
+Player 1's move: row_or_col: 0 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 59
+Player 1 total cost: 59
+--------------------------------------
+Current Board:
+50 21 20 
+4 15 38 
+29 21 44 
+
+Player 0's turn:
+Simulations: 9
+Time: 0 seconds
+
+Player 0's move: row_or_col: 4 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 60
+Player 1 total cost: 59
+--------------------------------------
+Current Board:
+50 20 20 
+4 14 38 
+29 20 44 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 31 seconds
+
+Player 1's move: row_or_col: 0 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 60
+Player 1 total cost: 60
+--------------------------------------
+Current Board:
+49 19 19 
+4 14 38 
+29 20 44 
+
+Player 0's turn:
+Simulations: 9
+Time: 0 seconds
+
+Player 0's move: row_or_col: 3 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 61
+Player 1 total cost: 60
+--------------------------------------
+Current Board:
+48 19 19 
+3 14 38 
+28 20 44 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 29 seconds
+
+Player 1's move: row_or_col: 2 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 61
+Player 1 total cost: 61
+--------------------------------------
+Current Board:
+48 19 19 
+3 14 38 
+27 19 43 
+
+Player 0's turn:
+Simulations: 11
+Time: 0 seconds
+
+Player 0's move: row_or_col: 5 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 62
+Player 1 total cost: 61
+--------------------------------------
+Current Board:
+48 19 18 
+3 14 37 
+27 19 42 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 27 seconds
+
+Player 1's move: row_or_col: 3 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 62
+Player 1 total cost: 62
+--------------------------------------
+Current Board:
+47 19 18 
+2 14 37 
+26 19 42 
+
+Player 0's turn:
+Simulations: 13
+Time: 0 seconds
+
+Player 0's move: row_or_col: 3 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 63
+Player 1 total cost: 62
+--------------------------------------
+Current Board:
+46 19 18 
+1 14 37 
+25 19 42 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 24 seconds
+
+Player 1's move: row_or_col: 1 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 63
+Player 1 total cost: 63
+--------------------------------------
+Current Board:
+46 19 18 
+0 13 36 
+25 19 42 
+
+Player 0's turn:
+Simulations: 10
+Time: 0 seconds
+
+Player 0's move: row_or_col: 5 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 64
+Player 1 total cost: 63
+--------------------------------------
+Current Board:
+46 19 17 
+0 13 35 
+25 19 41 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 23 seconds
+
+Player 1's move: row_or_col: 2 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 64
+Player 1 total cost: 64
+--------------------------------------
+Current Board:
+46 19 17 
+0 13 35 
+24 18 40 
+
+Player 0's turn:
+Simulations: 8
+Time: 0 seconds
+
+Player 0's move: row_or_col: 0 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 65
+Player 1 total cost: 64
+--------------------------------------
+Current Board:
+45 18 16 
+0 13 35 
+24 18 40 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 22 seconds
+
+Player 1's move: row_or_col: 0 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 65
+Player 1 total cost: 65
+--------------------------------------
+Current Board:
+44 17 15 
+0 13 35 
+24 18 40 
+
+Player 0's turn:
+Simulations: 9
+Time: 0 seconds
+
+Player 0's move: row_or_col: 5 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 66
+Player 1 total cost: 65
+--------------------------------------
+Current Board:
+44 17 14 
+0 13 34 
+24 18 39 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 21 seconds
+
+Player 1's move: row_or_col: 4 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 66
+Player 1 total cost: 66
+--------------------------------------
+Current Board:
+44 16 14 
+0 12 34 
+24 17 39 
+
+Player 0's turn:
+Simulations: 10
+Time: 0 seconds
+
+Player 0's move: row_or_col: 5 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 67
+Player 1 total cost: 66
+--------------------------------------
+Current Board:
+44 16 13 
+0 12 33 
+24 17 38 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 20 seconds
+
+Player 1's move: row_or_col: 4 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 67
+Player 1 total cost: 67
+--------------------------------------
+Current Board:
+44 15 13 
+0 11 33 
+24 16 38 
+
+Player 0's turn:
+Simulations: 11
+Time: 0 seconds
+
+Player 0's move: row_or_col: 5 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 68
+Player 1 total cost: 67
+--------------------------------------
+Current Board:
+44 15 12 
+0 11 32 
+24 16 37 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 18 seconds
+
+Player 1's move: row_or_col: 2 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 68
+Player 1 total cost: 68
+--------------------------------------
+Current Board:
+44 15 12 
+0 11 32 
+23 15 36 
+
+Player 0's turn:
+Simulations: 11
+Time: 0 seconds
+
+Player 0's move: row_or_col: 5 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 69
+Player 1 total cost: 68
+--------------------------------------
+Current Board:
+44 15 11 
+0 11 31 
+23 15 35 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 17 seconds
+
+Player 1's move: row_or_col: 0 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 69
+Player 1 total cost: 69
+--------------------------------------
+Current Board:
+43 14 10 
+0 11 31 
+23 15 35 
+
+Player 0's turn:
+Simulations: 18
+Time: 0 seconds
+
+Player 0's move: row_or_col: 4 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 70
+Player 1 total cost: 69
+--------------------------------------
+Current Board:
+43 13 10 
+0 10 31 
+23 14 35 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 16 seconds
+
+Player 1's move: row_or_col: 4 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 70
+Player 1 total cost: 70
+--------------------------------------
+Current Board:
+43 12 10 
+0 9 31 
+23 13 35 
+
+Player 0's turn:
+Simulations: 16
+Time: 0 seconds
+
+Player 0's move: row_or_col: 4 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 71
+Player 1 total cost: 70
+--------------------------------------
+Current Board:
+43 11 10 
+0 8 31 
+23 12 35 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 14 seconds
+
+Player 1's move: row_or_col: 0 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 71
+Player 1 total cost: 71
+--------------------------------------
+Current Board:
+42 10 9 
+0 8 31 
+23 12 35 
+
+Player 0's turn:
+Simulations: 17
+Time: 0 seconds
+
+Player 0's move: row_or_col: 2 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 72
+Player 1 total cost: 71
+--------------------------------------
+Current Board:
+42 10 9 
+0 8 31 
+22 11 34 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 12 seconds
+
+Player 1's move: row_or_col: 0 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 72
+Player 1 total cost: 72
+--------------------------------------
+Current Board:
+41 9 8 
+0 8 31 
+22 11 34 
+
+Player 0's turn:
+Simulations: 19
+Time: 0 seconds
+
+Player 0's move: row_or_col: 0 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 73
+Player 1 total cost: 72
+--------------------------------------
+Current Board:
+40 8 7 
+0 8 31 
+22 11 34 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 10 seconds
+
+Player 1's move: row_or_col: 0 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 73
+Player 1 total cost: 73
+--------------------------------------
+Current Board:
+39 7 6 
+0 8 31 
+22 11 34 
+
+Player 0's turn:
+Simulations: 17
+Time: 0 seconds
+
+Player 0's move: row_or_col: 0 subtract: 3
+
+Valid checking...The move is vaild.
+Player 0 total cost: 76
+Player 1 total cost: 73
+--------------------------------------
+Current Board:
+36 4 3 
+0 8 31 
+22 11 34 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 2 seconds
+
+Player 1's move: row_or_col: 2 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 76
+Player 1 total cost: 74
+--------------------------------------
+Current Board:
+36 4 3 
+0 8 31 
+21 10 33 
+
+Player 0's turn:
+Simulations: 33
+Time: 0 seconds
+
+Player 0's move: row_or_col: 2 subtract: 3
+
+Valid checking...The move is vaild.
+Player 0 total cost: 79
+Player 1 total cost: 74
+--------------------------------------
+Current Board:
+36 4 3 
+0 8 31 
+18 7 30 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 1 seconds
+
+Player 1's move: row_or_col: 5 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 79
+Player 1 total cost: 75
+--------------------------------------
+Current Board:
+36 4 2 
+0 8 30 
+18 7 29 
+
+Player 0's turn:
+Simulations: 31
+Time: 0 seconds
+
+Player 0's move: row_or_col: 2 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 80
+Player 1 total cost: 75
+--------------------------------------
+Current Board:
+36 4 2 
+0 8 30 
+17 6 28 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 1 seconds
+
+Player 1's move: row_or_col: 5 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 80
+Player 1 total cost: 76
+--------------------------------------
+Current Board:
+36 4 1 
+0 8 29 
+17 6 27 
+
+Player 0's turn:
+Simulations: 22
+Time: 0 seconds
+
+Player 0's move: row_or_col: 4 subtract: 2
+
+Valid checking...The move is vaild.
+Player 0 total cost: 82
+Player 1 total cost: 76
+--------------------------------------
+Current Board:
+36 2 1 
+0 6 29 
+17 4 27 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 1 seconds
+
+Player 1's move: row_or_col: 2 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 82
+Player 1 total cost: 77
+--------------------------------------
+Current Board:
+36 2 1 
+0 6 29 
+16 3 26 
+
+Player 0's turn:
+Simulations: 70
+Time: 0 seconds
+
+Player 0's move: row_or_col: 2 subtract: 3
+
+Valid checking...The move is vaild.
+Player 0 total cost: 85
+Player 1 total cost: 77
+--------------------------------------
+Current Board:
+36 2 1 
+0 6 29 
+13 0 23 
+
+Player 1's turn:
+Simulations: 3000000
+Time: 1 seconds
+
+Player 1's move: row_or_col: 5 subtract: 1
+
+Valid checking...The move is vaild.
+Player 0 total cost: 85
+Player 1 total cost: 78
+--------------------------------------
+Final Board:
+36 2 0 
+0 6 28 
+13 0 22 
+Player 1 ends with a dead end!
+Player 0 total cost: 85
+Player 1 total cost: 85

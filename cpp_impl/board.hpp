@@ -5,6 +5,7 @@ class Episode;
 class Board {
   friend class Episode;
   friend std::istream& operator>>(std::istream& is, Board& b);
+
  private:
   uint64_t raw = 0;
 
@@ -35,15 +36,11 @@ class Board {
   static constexpr int idxs[6][3] = {{0, 1, 2}, {3, 4, 5}, {6, 7, 8},
                                      {0, 3, 6}, {1, 4, 7}, {2, 5, 8}};
 
-  inline const std::tuple<const int (&)[3], const int> action2idx(
-      int action) const {
-    return {idxs[action % 6], /*minus= */ action / 6 + 1};
-  }
+
   inline const bool legal(int action) const {  // TODO: Use `pext` to accelerate
-    auto&& [idxs, minus] = action2idx(action);
     bool legal = true;
-    for (auto& idx : idxs) {
-      legal &= get(idx) >= minus;
+    for (auto& idx : idxs[action % 6]) {
+      legal &= get(idx) >= (action / 6 + 1);
     }
     return legal;
   };
@@ -148,7 +145,6 @@ class Board {
 
   std::tuple<Reward, bool> apply(int action) {
     if (!legal(action)) std::cout << "ILLEGAL!\n";
-    auto&& [idxs, minus] = action2idx(action);
     static constexpr uint64_t row_or_col[6] = {
         0b0'0000000'0000000'0000000'0000000'0000000'0000000'0000001'0000001'0000001ULL,  // 1st row
         0b0'0000000'0000000'0000000'0000001'0000001'0000001'0000000'0000000'0000000ULL,  // 2nd row
@@ -157,6 +153,7 @@ class Board {
         0b0'0000000'0000001'0000000'0000000'0000001'0000000'0000000'0000001'0000000ULL,  // 2nd col
         0b0'0000001'0000000'0000000'0000001'0000000'0000000'0000001'0000000'0000000ULL,  // 3rd col
     };
+    int minus = action / 6 + 1;
     raw -= minus * row_or_col[action % 6];
     auto&& [rt, done] = terminated();
     return {rt - minus, done};
@@ -225,11 +222,12 @@ class Board {
 std::ostream& operator<<(std::ostream& os, const Board& b) {
   for (int i = 0; i < 9; i++) {
     os << int(b.get(i)) << ((i + 1) % 3 ? "\t" : "\n");
-  } os << "\n";
+  }
+  os << "\n";
   return os;
 }
 
 std::istream& operator>>(std::istream& is, Board& b) {
-    is >> b.raw;
-    return is;
+  is >> b.raw;
+  return is;
 }
