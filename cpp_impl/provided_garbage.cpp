@@ -155,7 +155,7 @@ void make_your_move(vector<vector<int>> Board_, int& row_or_col, int& subtract) 
   // 3rd_row -> 0, 1, 2 ; 1st_col, 2nd_col, 3rd_col -> 3, 4, 5 subtract: number
   // to subtract, should be 1, 2 or 3 (don't forget restriction!)
   //*********
-  static auto player = mcts_player(5000, true);
+  static auto player = hybrid_player(5);
   Board b = Board(Board_);
   auto action = player.generate(b);
   b.apply(action);
@@ -166,13 +166,7 @@ void make_your_move(vector<vector<int>> Board_, int& row_or_col, int& subtract) 
 }
 
 void opponent_move(vector<vector<int>> Board_, int& row_or_col, int& subtract) {
-  static auto player = mcts_player(5000);
-  Board b = Board(Board_);
-  auto action = player.generate(b);
-  b.apply(action);
-  std::cout << b << std::endl;
-  row_or_col = action % 6;
-  subtract = action/6 + 1;
+  cin >> row_or_col >> subtract;
 }
 
 int main() {

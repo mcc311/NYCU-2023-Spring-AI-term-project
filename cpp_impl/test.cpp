@@ -54,8 +54,8 @@ int main(int argc, const char* argv[]) {
 
   // auto p1 = nega_player(10, false);
   // auto p2 = pvs_player(10, false);
-  auto p1 = hybrid_player(5);
-  auto p2 = nega_player();
+  auto p1 = hybrid_player(1);
+  auto p2 = mcts_player(10000);
   auto&& [first_win_rate, second_win_rate] =
-          test_player0((player&)p1, (player&)p2, 4, 60, 20, true);
+          test_player0((player&)p1, (player&)p2, 10, 80, 40, false);
 }

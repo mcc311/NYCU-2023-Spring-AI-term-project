@@ -1,12 +1,10 @@
 #pragma once
-#include <algorithm>
 #include <array>
 #include <fstream>
 #include <iostream>
 #include <iterator>
 #include <numeric>
 #include <random>
-#include <ranges>
 #include <vector>
 
 #include "board.hpp"

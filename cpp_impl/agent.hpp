@@ -47,7 +47,7 @@ class nega_player : public player {
   bool heuristic;
 
   // transposition table
-  std::unordered_map<Board::Hash, Board::Reward> transpositionTable;
+  std::unordered_map<Board::Hash, Board::Reward> transposition_table;
   nega_player(int max_depth = 3, bool heuristic = false)
       : max_depth(max_depth), heuristic(heuristic){};
 
@@ -58,36 +58,32 @@ class nega_player : public player {
   Board::Reward negamaxSearch(const Board& b, int depth, bool done,
                               Board::Reward alpha, Board::Reward beta) {
     // Check if the state has already been evaluated
-    Board::Hash hashValue = b.hash();
-    if (transpositionTable.count(hashValue) > 0) {
-      return transpositionTable[hashValue];
+    Board::Hash hash = b.hash();
+    if (transposition_table.count(hash) > 0) {
+      return transposition_table[hash];
     }
 
     // Check if the search has reached the maximum depth or the game is over
     if (done) {
       return 0;
     }
-    // if (depth == 0) {
-    //   transpositionTable[hashValue] = evaluate(b);
-    //   return transpositionTable[hashValue];
-    // }
 
-    Board::Reward maxEval = -std::numeric_limits<Board::Reward>::infinity();
+    Board::Reward best_value = -std::numeric_limits<Board::Reward>::infinity();
     // ... generate possible moves and evaluate them
     for (const Board::Action& action : b.shuffle_legal_move(heuristic)) {
       Board b_ = b;
       auto&& [r, done] = b_.apply(action);
       Board::Reward eval =
           r - negamaxSearch(b_, depth - 1, done, -beta, -alpha);
-      maxEval = std::max(maxEval, eval);
+      best_value = std::max(best_value, eval);
       alpha = std::max(alpha, eval);
       if (beta <= alpha) {
         break;  // Beta cutoff
       }
     }
     // Store the evaluated state in the transposition table
-    transpositionTable[hashValue] = maxEval;
-    return maxEval;
+    transposition_table[hash] = best_value;
+    return best_value;
   };
 
   virtual Board::Action generate(Board& b) override {
@@ -120,20 +116,17 @@ class pvs_player : public nega_player {
                                          Board::Reward alpha,
                                          Board::Reward beta) {
     // Check if the state has already been evaluated
-    Board::Hash hashValue = b.hash();
-    if (transpositionTable.count(hashValue) > 0) {
-      return transpositionTable[hashValue];
+    Board::Hash hash = b.hash();
+    if (transposition_table.count(hash) > 0) {
+      return transposition_table[hash];
     }
 
     // Check if the search has reached the maximum depth or the game is over
     if (done) {
       return 0;
     }
-    if (depth == 0) {
-      return evaluate(b);
-    }
 
-    Board::Reward maxEval = -std::numeric_limits<Board::Reward>::infinity();
+    Board::Reward best_value = -std::numeric_limits<Board::Reward>::infinity();
     bool firstChild = true;
 
     // Generate possible moves and evaluate them
@@ -154,7 +147,7 @@ class pvs_player : public nega_player {
         }
       }
 
-      maxEval = std::max(maxEval, eval);
+      best_value = std::max(best_value, eval);
       alpha = std::max(alpha, eval);
       if (beta <= alpha) {
         break;  // Beta cutoff
@@ -162,8 +155,8 @@ class pvs_player : public nega_player {
     }
 
     // Store the evaluated state in the transposition table
-    transpositionTable[hashValue] = maxEval;
-    return maxEval;
+    transposition_table[hash] = best_value;
+    return best_value;
   }
 
   virtual Board::Action generate(Board& b) override {
@@ -185,51 +178,108 @@ class pvs_player : public nega_player {
     return best_action;
   };
 };
-#define c (std::cout << __LINE__ << std::endl)
-class hybrid_player : nega_player { 
+
+class hybrid_player : player {
  public:
   int time_limit;
-  hybrid_player(int time_limit = 59) : nega_player(), time_limit(time_limit){};
+  bool mcts_done = false;
+  bool negamax_done = false;
+  std::unordered_map<Board::Hash, Board::Reward> transposition_table;
+  Board::Action nega_generate(Board& b) {
+    int best_action = -1;
+    Board::Reward best_value = -std::numeric_limits<Board::Reward>::infinity();
+    for (auto& action : b.shuffle_legal_move()) {
+      auto b_ = b;
+      auto&& [reward, done] = b_.apply(action);
+      Board::Reward value =
+          reward -
+          negamaxSearch(b_, done,
+                        -std::numeric_limits<Board::Reward>::infinity(),
+                        std::numeric_limits<Board::Reward>::infinity());
+      if (value > best_value) {
+        best_value = value;
+        best_action = action;
+      }
+    }
+    return best_action;
+  };
+
+  Board::Reward negamaxSearch(const Board& b, bool done, Board::Reward alpha,
+                              Board::Reward beta) {
+    if (mcts_done) return 0;
+    // Check if the state has already been evaluated
+    Board::Hash hash = b.hash();
+    if (transposition_table.count(hash) > 0) {
+      return transposition_table[hash];
+    }
+
+    // Check if the search has reached the maximum depth or the game is over
+    if (done) {
+      return 0;
+    }
+
+    Board::Reward best_value = -std::numeric_limits<Board::Reward>::infinity();
+    // ... generate possible moves and evaluate them
+    for (const Board::Action& action : b.shuffle_legal_move()) {
+      Board b_ = b;
+      auto&& [r, done] = b_.apply(action);
+      Board::Reward eval = r - negamaxSearch(b_, done, -beta, -alpha);
+      best_value = std::max(best_value, eval);
+      alpha = std::max(alpha, eval);
+      if (beta <= alpha) {
+        break;  // Beta cutoff
+      }
+    }
+    // Store the evaluated state in the transposition table
+    if (!mcts_done) transposition_table[hash] = best_value;
+    return best_value;
+  };
+
+  hybrid_player(int time_limit = 57) : time_limit(time_limit){};
   virtual Board::Action generate(Board& b) override {
-c;    Board::Action negamax_result;
-c;    bool negamax_done = false;
-c;    std::thread negamaxThread([&]() {
-c;      negamax_result = nega_player::generate(b);
-c;      negamax_done = true;
-c;    });
-c;
-c;    Board::Action mcts_result;
-c;    std::thread mctsThread([&]() {
-c;      Node* root = new Node(b);
-c;      root->expand();
-c;
-c;      std::chrono::steady_clock::time_point start =
-          std::chrono::steady_clock::now();
-c;      while (std::chrono::steady_clock::now() - start <
-            std::chrono::seconds(time_limit) && !negamax_done) {
-c;        Node* selected = root->select();
-c;        selected->expand();
-c;        Board::Reward score = selected->rollout();
-c;        selected->backpropagate(score);
-c;      }
-c;
-c;      Board::Reward best_reward =
+    std::chrono::steady_clock::time_point start =
+        std::chrono::steady_clock::now();
+    negamax_done = false;
+    mcts_done = false;
+
+    Board::Action negamax_result;
+    std::thread negamaxThread([&]() {
+      negamax_result = nega_generate(b);
+      negamax_done = true;
+    });
+
+    Board::Action mcts_result;
+    std::thread mctsThread([&]() {
+      Node* root = new Node(b);
+      root->expand();
+
+      while (std::chrono::steady_clock::now() - start <
+                 std::chrono::seconds(time_limit) &&
+             !negamax_done) {
+        Node* selected = root->select();
+        selected->expand();
+        Board::Reward score = selected->rollout();
+        selected->backpropagate(score);
+      }
+
+      Board::Reward best_reward =
           -std::numeric_limits<Board::Reward>::infinity();
-c;      for (auto* child : root->children) {
-c;        Board::Reward avg_score = child->value();
-c;        if (avg_score > best_reward) {
-c;          best_reward = avg_score;
-c;          mcts_result = child->action;
-c;        }
-c;      }
-        delete root;
-c;    });
-c;
-c;    // Wait for either thread to finish
-c;    if (negamaxThread.joinable()) negamaxThread.join();
-c;    if (mctsThread.joinable()) mctsThread.join();
-c;
-c;    // Return the result from the finished thread
-c;    return (negamax_done) ? negamax_result : mcts_result;
-  }
+      for (auto* child : root->children) {
+        Board::Reward avg_score = child->value();
+        if (avg_score > best_reward) {
+          best_reward = avg_score;
+          mcts_result = child->action;
+        }
+      }
+      delete root;
+      mcts_done = true;
+    });
+
+    // Wait for either thread to finish
+    if (negamaxThread.joinable()) negamaxThread.join();
+    if (mctsThread.joinable()) mctsThread.join();
+
+    // Return the result from the finished thread
+    return (negamax_done) ? negamax_result : mcts_result;
+  };
 };
