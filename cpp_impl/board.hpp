@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <algorithm>
+#include <ranges>
 class Episode;
 class Board {
   friend class Episode;

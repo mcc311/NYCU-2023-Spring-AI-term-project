@@ -17,7 +17,7 @@ int main(int argc, const char* argv[]) {
             std::ostream_iterator<const char*>(std::cout, " "));
   std::cout << std::endl;
   size_t total = 1000000, block = 10000;
-  float alpha = 0.01;
+  float alpha = 0.0001;
   size_t b_max = 99, b_min = 50, max_depth = 3, test_num = 100;
   std::string slide_args, place_args;
   std::string load_path = "", save_path = "";
@@ -52,10 +52,10 @@ int main(int argc, const char* argv[]) {
     }
   }
 
-  auto p1 = nega_player(10, false);
-  auto p2 = pvs_player(10, false);
+  auto p1 = nega_player(7);
+  auto p2 = nega_player(8);
   // auto p1 = hybrid_player(1);
   // auto p2 = mcts_player(10000);
   auto&& [first_win_rate, second_win_rate] =
-          test_player0((player&)p1, (player&)p2, 50, 40, 30, false);
+          test_player0((player&)p1, (player&)p2, 2, 99, 50, true);
 }

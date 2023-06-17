@@ -65,7 +65,7 @@ class nega_player : public player {
     }
 
     // Check if the search has reached the maximum depth or the game is over
-    if (done) {
+    if (done || depth == 0) {
       return 0;
     }
 
@@ -124,7 +124,7 @@ class pvs_player : public nega_player {
     }
 
     // Check if the search has reached the maximum depth or the game is over
-    if (done) {
+    if (done || depth == 0) {
       return 0;
     }
 
