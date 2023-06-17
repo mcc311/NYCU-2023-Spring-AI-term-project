@@ -52,10 +52,10 @@ int main(int argc, const char* argv[]) {
     }
   }
 
-  auto p1 = nega_player(7);
-  auto p2 = nega_player(8);
+  auto p2 = nega_player(10);
+  auto p1 = mcts_player(10000);
   // auto p1 = hybrid_player(1);
   // auto p2 = mcts_player(10000);
   auto&& [first_win_rate, second_win_rate] =
-          test_player0((player&)p1, (player&)p2, 2, 99, 50, true);
+          test_player0((player&)p1, (player&)p2, 2, 99, 50, false);
 }

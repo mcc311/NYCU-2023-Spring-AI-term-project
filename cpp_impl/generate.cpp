@@ -36,7 +36,8 @@ int main(int argc, const char* argv[]) {
       id = next_opt();
     }
   }
-  std::string save_path = "trajectory/" + id + "_" + std::to_string(total / 1000000) + "M" +
+  std::string save_path = "trajectory/" + id + "_" +
+                          std::to_string(total / 1000000) + "M" +
                           std::to_string(total / 1000) + "k" +
                           std::to_string(sim_count) + "sim.episode";
   for (int i = 1; i < total; i++) {

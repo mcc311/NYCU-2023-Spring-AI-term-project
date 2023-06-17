@@ -11,12 +11,13 @@
 
 class Node {
  public:
-  Board state;   // St
+  Board state;           // St
   Board::Reward reward;  // Rt
   bool terminated;
   Board::Action action;
 
-  Board::Reward total_score;  // Rt+1 - Rt+2 + Rt+3 - Rt+4 +..., for all simulations
+  Board::Reward
+      total_score;  // Rt+1 - Rt+2 + Rt+3 - Rt+4 +..., for all simulations
   int visits;
   std::vector<Node*> children;
   Node* parent;
@@ -57,7 +58,7 @@ class Node {
           break;
         }
         Board::Reward value = (child->value() - min_value + 1e-3) /
-                      (max_value - min_value + 1e-3);
+                              (max_value - min_value + 1e-3);
         Board::Reward ucb1 =
             value + 1.25 * std::sqrt(2.0f * std::log(current->visits + 1e-5) /
                                      (child->visits + 1e-5));
@@ -99,34 +100,36 @@ class Node {
     }
   };
 
-  ~Node() { for (auto* child : children) delete child; }
+  ~Node() {
+    for (auto* child : children) delete child;
+  }
 };
 
-Board::Action monte_carlo_tree_search(const Board& state, int sim_count, int time_limit) {
+Board::Action monte_carlo_tree_search(const Board& state, int sim_count,
+                                      int time_limit) {
   auto start = std::chrono::steady_clock::now();
   Node* root = new Node(state);
-      root->expand();
+  root->expand();
 
-      while (std::chrono::steady_clock::now() - start <
-                 std::chrono::seconds(time_limit) && sim_count-- > 0) {
-        Node* selected = root->select();
-        selected->expand();
-        Board::Reward score = selected->rollout();
-        selected->backpropagate(score);
-      }
-      std::cout << "Simulations: " << root->visits << std::endl;
+  while (std::chrono::steady_clock::now() - start <
+             std::chrono::seconds(time_limit) &&
+         sim_count-- > 0) {
+    Node* selected = root->select();
+    selected->expand();
+    Board::Reward score = selected->rollout();
+    selected->backpropagate(score);
+  }
 
-      Board::Reward best_reward =
-          -std::numeric_limits<Board::Reward>::infinity();
-      Board::Action best_action = -1;
-      for (auto* child : root->children) {
-        Board::Reward avg_score = child->value();
-        if (avg_score > best_reward) {
-          best_reward = avg_score;
-          best_action = child->action;
-        }
-      }
-      delete root;
+  Board::Reward best_reward = -std::numeric_limits<Board::Reward>::infinity();
+  Board::Action best_action = -1;
+  for (auto* child : root->children) {
+    Board::Reward avg_score = child->value();
+    if (avg_score > best_reward) {
+      best_reward = avg_score;
+      best_action = child->action;
+    }
+  }
+  delete root;
   return best_action;
 }
 

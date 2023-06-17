@@ -148,3 +148,81 @@ void TupleNet<FEAT_SIZE, FEAT_NUM>::update_weights(const Board& b,
     weights[i] -= lr * gradient_weights[i];
   }
 };
+
+template <int FEAT_SIZE, int FEAT_NUM>
+class NewNet {
+ public:
+  // NewNet(const std::string& load_path);
+  NewNet(const std::array<std::array<int, FEAT_SIZE>, FEAT_NUM>& feat_idx_)
+      : feat_idx(feat_idx_) {values.fill(0.0f);};
+  // void load(const std::string& load_path);
+  // void save(const std::string& save_path);
+  auto get_feats(const Board& b) const {
+    std::vector<uint32_t> result;
+    for (int isom = 0; isom < 8; isom++) {
+      uint32_t idx = 0;
+      for (const auto& feats : feat_idx) {
+        idx *= 3;
+        uint32_t feat = 0;
+        for (const auto& f : feats) {
+          feat ^= b.get(f, isom);
+        }
+        feat %= 3;
+        idx += feat;
+      }
+      result.emplace_back(idx);
+    }
+    return result;
+  }
+  Board::Reward evaluate(const Board& b) const {
+    Board::Reward value = 0;
+    for (const auto& feat : get_feats(b)) {
+      value += values[feat];
+    }
+    return value;
+  };
+
+  void update_net(const Board& b, const Board::Reward error,
+                  const Board::Reward lr){
+    for (const auto& feat : get_feats(b)) {
+      values[feat] += lr * error / (8);
+    }
+  };
+  
+  void set_feats(const std::array<std::array<int, FEAT_SIZE>, FEAT_NUM>& feat_idx_) {
+    feat_idx = feat_idx_;
+  }
+  void load(const std::string& load_path) {
+    std::ifstream ifs(load_path);
+    if (!ifs.is_open()) {
+      std::cout << "Cannot open file " << load_path << std::endl;
+      return;
+    }
+    for (auto& v : feat_idx) {
+      ifs.read(reinterpret_cast<char*>(v.data()), sizeof(int) * FEAT_SIZE);
+    }
+    ifs.read(reinterpret_cast<char*>(values.data()), sizeof(Board::Reward) * values.size());
+    ifs.close();
+  };
+  void save(const std::string& save_path) {
+    std::ofstream ofs(save_path,
+                      std::ios::out | std::ios::binary | std::ios::trunc);
+    if (!ofs.is_open()) {
+      std::cout << "Cannot open file " << save_path << std::endl;
+      return;
+    }
+    for (auto& v : feat_idx) {
+      ofs.write(reinterpret_cast<char*>(v.data()), sizeof(int) * FEAT_SIZE);
+    }
+    ofs.write(reinterpret_cast<char*>(values.data()), sizeof(Board::Reward) * values.size());
+    ofs.close();
+  };
+  NewNet(const std::string &load_path) {
+    load(load_path);
+  }
+ public:
+  // n tuple value array
+  std::array<Board::Reward, static_cast<int>(std::pow(FEAT_SIZE, FEAT_NUM))> values;
+  // feature index array
+  std::array<std::array<int, FEAT_SIZE>, FEAT_NUM> feat_idx;
+};

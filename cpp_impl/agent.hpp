@@ -33,9 +33,9 @@ class mcts_player : public player {
   bool heuristic;
 
  public:
-  int sim_count=0;
-  int time_limit=0;
-  mcts_player(int sim_count = 500, int time_limit=5)
+  int sim_count = 0;
+  int time_limit = 0;
+  mcts_player(int sim_count = 500, int time_limit = 5)
       : sim_count(sim_count), time_limit(time_limit){};
   virtual Board::Action generate(Board& b) {
     return monte_carlo_tree_search(b, sim_count, time_limit);
@@ -46,15 +46,15 @@ class nega_player : public player {
  public:
   int max_depth;
   bool heuristic;
+  NewNet<3, 8> net;
 
   // transposition table
   std::unordered_map<Board::Hash, Board::Reward> transposition_table;
   nega_player(int max_depth = 3, bool heuristic = false)
-      : max_depth(max_depth), heuristic(heuristic){};
+      : max_depth(max_depth), heuristic(heuristic), net("model/3_8_newNet.model"){};
 
   Board::Reward evaluate(const Board& b) {
-    // return net.evaluate(b);
-    return mcts_estimate(b, 100);
+    return net.evaluate(b);
   }
   Board::Reward negamaxSearch(const Board& b, int depth, bool done,
                               Board::Reward alpha, Board::Reward beta) {
@@ -65,8 +65,11 @@ class nega_player : public player {
     }
 
     // Check if the search has reached the maximum depth or the game is over
-    if (done || depth == 0) {
+    if (done) {
       return 0;
+    }
+    if (depth == 0){
+      return evaluate(b);
     }
 
     Board::Reward best_value = -std::numeric_limits<Board::Reward>::infinity();
@@ -190,7 +193,6 @@ class hybrid_player : player {
   bool negamax_done = false;
   std::unordered_map<Board::Hash, Board::Reward> transposition_table;
 
-
   Board::Action nega_generate(Board& b) {
     transposition_table.clear();
     int best_action = -1;
@@ -242,8 +244,6 @@ class hybrid_player : player {
     return best_value;
   };
 
-
-  
   virtual Board::Action generate(Board& b) override {
     std::chrono::steady_clock::time_point start =
         std::chrono::steady_clock::now();
@@ -254,7 +254,7 @@ class hybrid_player : player {
     Board::Action negamax_result;
     std::thread negamaxThread([&]() {
       negamax_result = nega_generate(b);
-      if(!mcts_done) negamax_done = true;
+      if (!mcts_done) negamax_done = true;
     });
 
     Board::Action mcts_result;
@@ -271,7 +271,7 @@ class hybrid_player : player {
         Board::Reward score = selected->rollout();
         selected->backpropagate(score);
       }
-      std::cout << "Simulations: " <<  sim_count << std::endl;
+      std::cout << "Simulations: " << sim_count << std::endl;
 
       Board::Reward best_reward =
           -std::numeric_limits<Board::Reward>::infinity();
@@ -283,7 +283,7 @@ class hybrid_player : player {
         }
       }
       delete root;
-      if(!negamax_done) mcts_done = true;
+      if (!negamax_done) mcts_done = true;
     });
 
     // Wait for either thread to finish

@@ -1,8 +1,9 @@
 #pragma once
-#include <iostream>
-#include <vector>
 #include <algorithm>
+#include <iostream>
 #include <ranges>
+#include <vector>
+#include <random>
 class Episode;
 class Board {
   friend class Episode;
@@ -37,7 +38,6 @@ class Board {
 
   static constexpr int idxs[6][3] = {{0, 1, 2}, {3, 4, 5}, {6, 7, 8},
                                      {0, 3, 6}, {1, 4, 7}, {2, 5, 8}};
-
 
   inline const bool legal(int action) const {  // TODO: Use `pext` to accelerate
     bool legal = true;

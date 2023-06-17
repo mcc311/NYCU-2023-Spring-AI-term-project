@@ -1,30 +1,32 @@
 #pragma once
-#include <numeric>
-#include <vector>
 #include <time.h>
 
-#include <sstream>
 #include <iostream>
+#include <numeric>
+#include <sstream>
+#include <vector>
+
 #include "agent.hpp"
 #include "board.hpp"
 class ReplayBuffer;
 class Episode {
   friend class ReplayBuffer;
+
  public:
-  typedef struct step{ // At, R_t, St+1
+  typedef struct step {  // At, R_t, St+1
     Board::Action action;
     Board::Reward reward;
     Board state;
-    step(Board::Action action=-1, Board::Reward reward=0, Board state={}):
-      action(action), reward(reward), state(state){};
+    step(Board::Action action = -1, Board::Reward reward = 0, Board state = {})
+        : action(action), reward(reward), state(state){};
   } Step;
 
   Board init_state;
-  Episode(Board init_state=0): init_state(init_state){};
+  Episode(Board init_state = 0) : init_state(init_state){};
   std::vector<Step> history;
   float scores[2] = {};
   clock_t max_time[2] = {-std::numeric_limits<clock_t>::infinity(),
-                       -std::numeric_limits<clock_t>::infinity()};
+                         -std::numeric_limits<clock_t>::infinity()};
   clock_t time = 0;
   size_t size() { return history.size(); };
   void add(const Step& s) { history.push_back(s); }
@@ -35,11 +37,12 @@ class Episode {
   };
   void save(const int i, const std::string& filename) {
     std::ofstream out(filename, std::ios::app);
-    out << i << " " << scores[0] << " " << scores[1] << " " << time << " " << init_state.raw << " ";
+    out << i << " " << scores[0] << " " << scores[1] << " " << time << " "
+        << init_state.raw << " ";
     for (auto&& [action, reward, state] : history) {
       out << action << " " << reward << " " << state.raw << " ";
     }
-    out <<  "\n";
+    out << "\n";
     out.close();
   }
 };
@@ -131,7 +134,7 @@ std::ostream& operator<<(std::ostream& os, const Episode& ep) {
   os << ep.init_state;
   for (auto&& [action, reward, state] : ep.history) {
     os << action << " " << reward << "\n" << state << " ";
-  } os << std::endl;
+  }
+  os << std::endl;
   return os;
 }
-
